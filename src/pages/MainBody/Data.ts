@@ -8,7 +8,7 @@ export const shopManager = [
   {
     id: 2,
     name: "Place Order",
-    path: "/order",
+    path: "/place-order",
     iconify: "lets-icons:order-light",
   },
 ];
@@ -23,7 +23,7 @@ export const purchaseManager = [
   {
     id: 2,
     name: "Buy Order",
-    path: "/order",
+    path: "/buy-order",
     iconify: "lets-icons:order-light",
   },
 ];
@@ -37,8 +37,8 @@ export const procurementManager = [
   },
   {
     id: 2,
-    name: "Confirm Order",
-    path: "/order",
+    name: "Check Order",
+    path: "/check-order",
     iconify: "lets-icons:order-light",
   },
 ];
@@ -52,8 +52,8 @@ export const allocationManager = [
   },
   {
     id: 2,
-    name: "Deliver Order",
-    path: "/order",
+    name: "Confirm Order",
+    path: "/Confirm-order",
     iconify: "lets-icons:order-light",
   },
 ];
