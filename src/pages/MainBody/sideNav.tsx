@@ -7,17 +7,28 @@ import Toolbar from "@mui/material/Toolbar";
 import { Avatar, IconButton, ListItemIcon, Paper } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import Logo from "../../core/Logo";
-// import { useStyles } from "./styles";
 import useStyles from "./styles";
-import { navList } from "./Data";
+import { isAllNav, navigationData } from "./Data";
 import Iconify from "../../core/Iconify";
 import useUserStore from "../../store/userData";
+import useRoleStore from "../../store/role";
+import { useMemo } from "react";
 
 const SideNav = () => {
   const { classes } = useStyles();
   const { data } = useUserStore((state) => ({
     data: state.data,
   }));
+
+  const { role } = useRoleStore((state) => ({
+    role: state.role,
+  }));
+
+  const navData = useMemo(() => {
+    // Combine role-specific and common navigation items
+    const roleSpecificNav = navigationData[role] || [];
+    return [...roleSpecificNav, ...isAllNav];
+  }, [role]);
 
   return (
     <Drawer
@@ -51,7 +62,7 @@ const SideNav = () => {
           </List>
 
           <List>
-            {navList.map((data, index) => {
+            {navData.map((data, index) => {
               return (
                 <NavLink
                   to={data.path}
@@ -64,10 +75,6 @@ const SideNav = () => {
                       color="primary"
                     >
                       <ListItemIcon>
-                        {/* <img
-                          src={isActive ? data.isInActive : data.icon}
-                          height={"18px"}
-                        /> */}
                         <IconButton color={isActive ? "primary" : "default"}>
                           <Iconify icon={data.iconify} />
                         </IconButton>

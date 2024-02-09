@@ -14,9 +14,10 @@ import Iconify from "../../../core/Iconify";
 import { faker } from "@faker-js/faker";
 import { useState, MouseEvent } from "react";
 import { Link } from "react-router-dom";
+import { IProduct } from "../../../models/IProduct";
 // ----------------------------------------------------------------------
 interface IProps {
-  data: string;
+  data: IProduct;
   index: number;
 }
 // ----------------------------------------------------------------------
@@ -39,20 +40,19 @@ const TRow = ({ data, index }: IProps) => {
         <TableCell component="th" scope="row" padding="none">
           <Stack direction="row" alignItems="center" spacing={2}>
             <Avatar
-              alt={faker.person.fullName()}
+              alt={data.name}
               src={`/assets/images/avatars/avatar_${index + 1}.jpg`}
             />
             <Typography variant="subtitle2" noWrap>
-              {faker.person.fullName()}
+              {data.name}
             </Typography>
           </Stack>
         </TableCell>
-        <TableCell align="center">{faker.location.city()}</TableCell>
+        <TableCell align="left">{data.description}</TableCell>
 
-        <TableCell align="center">{"130 Kg"}</TableCell>
         <TableCell align="center">
           <Label color={(index / 2 == 0 && "error") || "success"}>
-            {"10 Feb 2024"}
+            {data.category.name}
           </Label>
         </TableCell>
         <TableCell align="right">

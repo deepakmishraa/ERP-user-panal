@@ -17,24 +17,18 @@ export const THeading: ITableHeading[] = [
   },
   {
     id: 2,
+    name: "Description",
+    isMove: false,
+    align: "left",
+  },
+  {
+    id: 3,
     name: "Category",
     isMove: false,
     align: "center",
   },
   {
-    id: 3,
-    name: "Weight Type",
-    isMove: false,
-    align: "center",
-  },
-  {
     id: 4,
-    name: "Date",
-    isMove: false,
-    align: "center",
-  },
-  {
-    id: 5,
     name: "",
     isMove: true,
     align: "right",

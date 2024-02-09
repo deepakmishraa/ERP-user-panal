@@ -1,4 +1,4 @@
-export const navList = [
+export const shopManager = [
   {
     id: 1,
     name: "Dashboard",
@@ -6,52 +6,89 @@ export const navList = [
     iconify: "streamline:dashboard-3-solid",
   },
   {
-    id: 3,
-    name: "User",
-    path: "/user",
-    iconify: "gridicons:multiple-users",
-  },
-  {
-    id: 3,
-    name: "Payment",
-    path: "/payment",
-    iconify: "fluent:payment-32-regular",
-  },
-  {
-    id: 4,
-    name: "Shop",
-    path: "/shop",
-    iconify: "bi:shop",
-  },
-  {
-    id: 5,
-    name: "Order",
+    id: 2,
+    name: "Place Order",
     path: "/order",
     iconify: "lets-icons:order-light",
   },
+];
+
+export const purchaseManager = [
   {
-    id: 6,
+    id: 1,
+    name: "Dashboard",
+    path: "/",
+    iconify: "streamline:dashboard-3-solid",
+  },
+  {
+    id: 2,
+    name: "Buy Order",
+    path: "/order",
+    iconify: "lets-icons:order-light",
+  },
+];
+
+export const procurementManager = [
+  {
+    id: 1,
+    name: "Dashboard",
+    path: "/",
+    iconify: "streamline:dashboard-3-solid",
+  },
+  {
+    id: 2,
+    name: "Confirm Order",
+    path: "/order",
+    iconify: "lets-icons:order-light",
+  },
+];
+
+export const allocationManager = [
+  {
+    id: 1,
+    name: "Dashboard",
+    path: "/",
+    iconify: "streamline:dashboard-3-solid",
+  },
+  {
+    id: 2,
+    name: "Deliver Order",
+    path: "/order",
+    iconify: "lets-icons:order-light",
+  },
+];
+
+export const isAllNav = [
+  {
+    id: 1,
     name: "Product",
     path: "/product",
     iconify: "icon-park-outline:ad-product",
   },
   {
-    id: 7,
+    id: 2,
     name: "Category",
     path: "/category",
     iconify: "carbon:category-new",
   },
 
   {
-    id: 8,
+    id: 3,
     name: "Profile",
     path: "/profile",
     iconify: "iconamoon:profile-fill",
   },
   {
-    id: 9,
+    id: 4,
     name: "Logout",
     path: "/login",
     iconify: "humbleicons:logout",
   },
 ];
+
+export const navigationData = {
+  shopManager,
+  purchaseManager,
+  procurementManager,
+  allocationManager,
+};
