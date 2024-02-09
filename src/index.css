@@ -1,0 +1,91 @@
+@font-face {
+  font-family: "Amazon Ember";
+  src: url(./assets/font/Amazon_font/Ember/AmazonEmber_Th.ttf) format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Amazon Ember";
+  src: url(./assets/font/Amazon_font/Ember/AmazonEmber_Lt.ttf) format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Amazon Ember";
+  src: url(./assets/font/Amazon_font/Ember/AmazonEmber_Rg.ttf) format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Amazon Ember";
+  src: url(./assets/font/Amazon_font/Ember/Amazon-Ember-Medium.ttf) format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Amazon Ember";
+  src: url(./assets/font/Amazon_font/Ember/AmazonEmber_Bd.ttf) format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Amazon Ember";
+  src: url(./assets/font/Amazon_font/Ember/AmazonEmber_He.ttf) format("truetype");
+  font-weight: 900;
+  font-style: normal;
+}
+
+/* end of fontStyle  */
+
+/* Remove Arrows/Spinners */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* end for code  */
+
+.amination {
+  background: linear-gradient(-45deg, #003c47, #5a808f, #5a808f, #003c47);
+  animation: gradient 5s ease infinite
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+a {
+  text-decoration: none !important;
+}
+
+/* a:link {
+  color: #448ccb;
+}
+
+a:visited {
+  color: #448ccb;
+}
+
+a:hover {
+  color: #ff9900 !important;
+}
+
+a:active {
+  color: #ff9900 !important;
+} */
