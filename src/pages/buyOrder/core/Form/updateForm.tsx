@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Avatar, Box, Stack, Typography } from "@mui/material";
 import { OutlineInput } from "../../../../core/InputField";
 import { useState } from "react";
 import { IState } from "../../../../models/IState";
@@ -10,6 +10,7 @@ import { UserService } from "../../../../services/UserServices";
 import Tosted from "../../../../core/Tosted";
 import useIsUserStore from "../../../../store/isUser";
 import WType from "../../../../core/WType";
+import { IProduct } from "../../../../models/IProduct";
 
 type SubmitData = {
   name: string;
@@ -20,9 +21,10 @@ type SubmitData = {
 
 interface IProps {
   handleClose: () => void;
+  data: IProduct;
 }
 
-const Form = ({ handleClose }: IProps) => {
+const UpdateForm = ({ handleClose, data }: IProps) => {
   const [name, setName] = useState("");
 
   const [state, setState] = useState<IState>({
@@ -37,13 +39,13 @@ const Form = ({ handleClose }: IProps) => {
     message: "Fill the Name",
   });
 
-  const [uRole, setURole] = useState("");
+  const [uRole, setURole] = useState(data.name);
   const [sRoleValid, setSRoleValid] = useState({
     isValid: false,
     message: "Select An Product",
   });
 
-  const [wType, setWType] = useState("");
+  const [wType, setWType] = useState("kilogram");
   const [sTypeValid, setSTypeValid] = useState({
     isValid: false,
     message: "Select An Weight Type",
@@ -154,10 +156,24 @@ const Form = ({ handleClose }: IProps) => {
   return (
     <>
       <form className="column" onSubmit={handleSubmit}>
-        <SRole
-          uRole={uRole}
-          handleChange={handleChange}
-          error={sRoleValid.isValid ? sRoleValid.message : undefined}
+        <Stack direction="row" alignItems="center" spacing={1} pb={2}>
+          <Avatar
+            alt={data.name}
+            src={`/assets/images/avatars/avatar_${1 + 1}.jpg`}
+            sx={{ height: "40px", width: "40px" }}
+          />
+          <Typography variant="subtitle2" noWrap>
+            {data.name} <br />
+            100 kg
+          </Typography>
+        </Stack>
+        <OutlineInput
+          value={name}
+          type="text"
+          label="Shop No"
+          handleInputChange={nameHandlerChange}
+          error={nameValid.isValid ? nameValid.message : undefined}
+          disabled={state.loader}
         />
 
         <Stack direction={"row"} gap={"20px"}>
@@ -184,7 +200,7 @@ const Form = ({ handleClose }: IProps) => {
             disabled={loader}
             loader={loader}
           >
-            Add Now
+            Update Now
           </Contained>
         </Box>
       </form>
@@ -197,5 +213,4 @@ const Form = ({ handleClose }: IProps) => {
     </>
   );
 };
-export default Form;
-export { default as UpdateForm } from "./updateForm";
+export default UpdateForm;

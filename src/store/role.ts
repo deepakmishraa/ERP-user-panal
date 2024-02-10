@@ -14,7 +14,7 @@ type Store = {
 };
 
 const useRoleStore = create<Store>((set) => ({
-  role: "purchaseManager", // Directly assign a default role as a string
+  role: "shopManager", // Directly assign a default role as a string
   setRole: (role: RoleType) => {
     set({ role });
   },

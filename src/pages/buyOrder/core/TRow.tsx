@@ -16,6 +16,8 @@ import { useState, MouseEvent } from "react";
 import { Link } from "react-router-dom";
 import { IProduct } from "../../../models/IProduct";
 import CircularProgressBar from "./CircularProgressBar";
+import ModelOpen from "../../../core/Model copy";
+import Update from "./Update";
 // ----------------------------------------------------------------------
 interface IProps {
   data: IProduct;
@@ -24,7 +26,7 @@ interface IProps {
 // ----------------------------------------------------------------------
 const TRow = ({ data, index }: IProps) => {
   const [open, setOpen] = useState<HTMLButtonElement | null>(null);
-
+  const [active, setActive] = useState(false);
   const handleOpenMenu = (event: MouseEvent<HTMLButtonElement>) => {
     setOpen(event.currentTarget);
   };
@@ -32,6 +34,21 @@ const TRow = ({ data, index }: IProps) => {
   const handleCloseMenu = () => {
     setOpen(null);
   };
+
+  const [oModel, setOModel] = useState(false);
+
+  const onModelHandler = () => {
+    setOModel(!oModel);
+  };
+  const hCloseModel = () => {
+    setOModel(false);
+  };
+  const activeHandler = (data: boolean) => {
+    setTimeout(() => {
+      setActive(data);
+    }, 1000);
+  };
+
   return (
     <>
       <TableRow hover role="checkbox" key={index} sx={{ cursor: "pointer" }}>
@@ -77,9 +94,12 @@ const TRow = ({ data, index }: IProps) => {
           sx: { width: 140 },
         }}
       >
-        <MenuItem onClick={handleCloseMenu}>
-          <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
-          Edit
+        <MenuItem onClick={onModelHandler}>
+          <Iconify
+            icon="material-symbols:deployed-code-update-outline"
+            sx={{ mr: 2 }}
+          />
+          Update
         </MenuItem>
         <Link to={`/vessel/1`}>
           <MenuItem sx={{ color: "info.main" }}>
@@ -87,11 +107,17 @@ const TRow = ({ data, index }: IProps) => {
             View
           </MenuItem>
         </Link>
-        <MenuItem sx={{ color: "error.main" }}>
-          <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
       </Popover>
+
+      <Update
+        open={oModel}
+        handleClose={hCloseModel}
+        activeHandler={activeHandler}
+        onModelHandler={onModelHandler}
+        title="Update An Order"
+        subTitle="Please fill the fields "
+        data={data}
+      />
     </>
   );
 };

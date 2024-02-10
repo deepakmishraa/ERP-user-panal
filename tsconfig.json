@@ -22,5 +22,5 @@
   },
   "include": [
     "src"
-, "src/core/InputField/.tsx"  ]
+, "src/core/InputField/.tsx", "src/components/RouteValidate/.tsx"  ]
 }
