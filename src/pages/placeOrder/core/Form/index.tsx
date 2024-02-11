@@ -116,7 +116,7 @@ const Form = ({ handleClose }: IProps) => {
 
     try {
       const response = await PlaceOrderServices.AddOrderApi(name, +quantity);
-      if (response.status === 201) {
+      if (response.status === 200) {
         setState({
           tosted: true,
           loader: false,

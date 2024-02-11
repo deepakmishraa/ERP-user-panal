@@ -10,6 +10,9 @@ import { IProduct } from "../../../models/IProduct";
 import { IState } from "../../../models/IState";
 import { ProductServices } from "../../../services/ProductServices";
 import Tosted from "../../../core/Tosted";
+import { IPlaceOrder } from "../../../models/IPlaceOrder";
+import { PlaceOrderServices } from "../../../services/PlaceOrder";
+import useIsPlaceOrderStore from "../../../store/isPlaceOrder";
 
 const List = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -23,14 +26,20 @@ const List = () => {
     message: "",
   });
 
-  const [list, setList] = useState<IProduct[] | undefined>(undefined);
+  const { active, setActive } = useIsPlaceOrderStore((state) => ({
+    active: state.active,
+    setActive: state.setActive,
+  }));
+
+  const [list, setList] = useState<IPlaceOrder[] | undefined>(undefined);
 
   const getAllProductList = async () => {
     try {
-      const response = await ProductServices.getAllProductApi();
+      const response = await PlaceOrderServices.getAllOrderApi();
       if (response.status === 200) {
-        setList(response.data.data);
+        setList(response.data.token[0].items);
         setState({ ...state, loader: false });
+        setActive(false);
       } else {
         setState({
           loader: false,
@@ -52,6 +61,12 @@ const List = () => {
   useEffect(() => {
     getAllProductList();
   }, []);
+
+  useEffect(() => {
+    if (active) {
+      getAllProductList();
+    }
+  }, [active]);
 
   const searchInputHandler = (value: string) => {
     setSearchInput(value);
