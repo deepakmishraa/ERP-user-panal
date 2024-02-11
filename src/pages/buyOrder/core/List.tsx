@@ -4,12 +4,12 @@ import { Paper, TableBody } from "@mui/material";
 import THeader from "../../../core/THeader";
 import MTable from "./MTable";
 import THead from "./THead";
-import Loader from "./Loader";
 import TRow from "./TRow";
-import { IProduct } from "../../../models/IProduct";
 import { IState } from "../../../models/IState";
 import { ProductServices } from "../../../services/ProductServices";
 import Tosted from "../../../core/Tosted";
+import { IBuyProduct } from "../../../models/IBuyProduct";
+import { PlaceOrderServices } from "../../../services/PlaceOrder";
 
 const List = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -23,13 +23,13 @@ const List = () => {
     message: "",
   });
 
-  const [list, setList] = useState<IProduct[] | undefined>(undefined);
+  const [list, setList] = useState<IBuyProduct[] | undefined>(undefined);
 
   const getAllProductList = async () => {
     try {
-      const response = await ProductServices.getAllProductApi();
+      const response = await PlaceOrderServices.getAllOrderApi();
       if (response.status === 200) {
-        setList(response.data.data);
+        setList(response.data.token);
         setState({ ...state, loader: false });
       } else {
         setState({

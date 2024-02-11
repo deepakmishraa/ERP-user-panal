@@ -5,6 +5,6 @@ export class LoginService {
       email,
       password,
     };
-    return axios.post(`${process.env.REACT_APP_API_URL}/admin/signin`, data);
+    return axios.post(`${process.env.REACT_APP_API_URL}/user/signin`, data);
   }
 }

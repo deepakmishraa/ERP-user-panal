@@ -125,9 +125,9 @@ export default function EmailLoginForm() {
             ...state,
             loader: false,
           });
-          cookies.set("erp-token", res.data.token);
+          cookies.set("management-token", res.data.token);
           setToken(res.data.token);
-          setData(res.data.data);
+          setData(res.data.data.user);
 
           navigate("/");
         })

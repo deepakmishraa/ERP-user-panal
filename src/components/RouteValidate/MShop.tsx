@@ -1,13 +1,13 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import useRoleStore from "../../store/role";
+import useUserStore from "../../store/userData";
 
 const MShop: React.FC = () => {
-  const { role } = useRoleStore((state) => ({
-    role: state.role,
+  const { data } = useUserStore((state) => ({
+    data: state.data,
   }));
 
-  return role === "shopManager" ? <Outlet /> : <Navigate to={"/login"} />;
+  return data?.role === "shopManager" ? <Outlet /> : <Navigate to={"/login"} />;
 };
 
 export default MShop;

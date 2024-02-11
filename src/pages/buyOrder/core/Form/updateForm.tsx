@@ -11,6 +11,7 @@ import Tosted from "../../../../core/Tosted";
 import useIsUserStore from "../../../../store/isUser";
 import WType from "../../../../core/WType";
 import { IProduct } from "../../../../models/IProduct";
+import { IBuyProduct } from "../../../../models/IBuyProduct";
 
 type SubmitData = {
   name: string;
@@ -21,7 +22,7 @@ type SubmitData = {
 
 interface IProps {
   handleClose: () => void;
-  data: IProduct;
+  data: IBuyProduct;
 }
 
 const UpdateForm = ({ handleClose, data }: IProps) => {
@@ -39,7 +40,7 @@ const UpdateForm = ({ handleClose, data }: IProps) => {
     message: "Fill the Name",
   });
 
-  const [uRole, setURole] = useState(data.name);
+  const [uRole, setURole] = useState(data.product._id);
   const [sRoleValid, setSRoleValid] = useState({
     isValid: false,
     message: "Select An Product",
@@ -158,13 +159,13 @@ const UpdateForm = ({ handleClose, data }: IProps) => {
       <form className="column" onSubmit={handleSubmit}>
         <Stack direction="row" alignItems="center" spacing={1} pb={2}>
           <Avatar
-            alt={data.name}
+            alt={data.product.name}
             src={`/assets/images/avatars/avatar_${1 + 1}.jpg`}
             sx={{ height: "40px", width: "40px" }}
           />
           <Typography variant="subtitle2" noWrap>
-            {data.name} <br />
-            100 kg
+            {data.product._id} <br />
+            {data.totalQuantity} Kg
           </Typography>
         </Stack>
         <OutlineInput

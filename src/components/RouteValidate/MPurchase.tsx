@@ -1,13 +1,17 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import useRoleStore from "../../store/role";
+import useUserStore from "../../store/userData";
 
 const MPurchase: React.FC = () => {
-  const { role } = useRoleStore((state) => ({
-    role: state.role,
+  const { data } = useUserStore((state) => ({
+    data: state.data,
   }));
 
-  return role === "purchaseManager" ? <Outlet /> : <Navigate to={"/login"} />;
+  return data?.role === "purchaseManager" ? (
+    <Outlet />
+  ) : (
+    <Navigate to={"/login"} />
+  );
 };
 
 export default MPurchase;

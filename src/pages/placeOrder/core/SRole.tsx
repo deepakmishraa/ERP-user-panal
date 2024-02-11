@@ -42,6 +42,7 @@ export default function SRole({ uRole, handleChange, error }: IProps) {
       <Select
         labelId="name"
         id="name"
+        name="name"
         value={uRole}
         label="Type"
         onChange={handleChange}

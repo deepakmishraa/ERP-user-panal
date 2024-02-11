@@ -6,7 +6,7 @@ export const InstanceAxios = () => {
   const instanceAxios = axios.create({
     baseURL: `${process.env.REACT_APP_API_URL}`,
     headers: {
-      Authorization: `Bearer ${cookies.get("erp-token")}`,
+      Authorization: `Bearer ${cookies.get("management-token")}`,
     },
   });
 

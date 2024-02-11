@@ -4,18 +4,15 @@ import { useState } from "react";
 import { IState } from "../../../../models/IState";
 import Contained from "../../../../core/Button/Contained";
 import SRole from "../SRole";
-import { removeHyphens } from "../../../../hooks/removeHypics";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { UserService } from "../../../../services/UserServices";
+import { SelectChangeEvent } from "@mui/material/Select";
 import Tosted from "../../../../core/Tosted";
-import useIsUserStore from "../../../../store/isUser";
 import WType from "../../../../core/WType";
+import { PlaceOrderServices } from "../../../../services/PlaceOrder";
+import useIsPlaceOrderStore from "../../../../store/isPlaceOrder";
 
 type SubmitData = {
   name: string;
-  email: string;
-  role: string;
-  mobileNo: string;
+  quantity: string;
 };
 
 interface IProps {
@@ -23,7 +20,8 @@ interface IProps {
 }
 
 const Form = ({ handleClose }: IProps) => {
-  const [name, setName] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [product, setProduct] = useState("");
 
   const [state, setState] = useState<IState>({
     loader: false,
@@ -37,19 +35,18 @@ const Form = ({ handleClose }: IProps) => {
     message: "Fill the Name",
   });
 
-  const [uRole, setURole] = useState("");
   const [sRoleValid, setSRoleValid] = useState({
     isValid: false,
     message: "Select An Product",
   });
 
-  const [wType, setWType] = useState("");
+  const [wType, setWType] = useState("gram");
   const [sTypeValid, setSTypeValid] = useState({
     isValid: false,
     message: "Select An Weight Type",
   });
 
-  const { setActive } = useIsUserStore((state) => ({
+  const { setActive } = useIsPlaceOrderStore((state) => ({
     setActive: state.setActive,
   }));
 
@@ -60,7 +57,7 @@ const Form = ({ handleClose }: IProps) => {
         message: "Select an role",
       });
     } else {
-      setURole(event.target.value);
+      setProduct(event.target.value);
       setSRoleValid({
         isValid: false,
         message: "select an Role",
@@ -83,8 +80,10 @@ const Form = ({ handleClose }: IProps) => {
     }
   };
 
-  const nameHandlerChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
+  const quantityHandlerChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setQuantity(event.target.value);
     if (event.target.value === "") {
       setNameValid({ isValid: true, message: "Fill An Name" });
     } else {
@@ -96,34 +95,28 @@ const Form = ({ handleClose }: IProps) => {
     e.preventDefault();
 
     setNameValid({
-      isValid: name === "" ? true : false,
-      message: "fill Name",
+      isValid: quantity === "" ? true : false,
+      message: "Fill An Quantity",
     });
     setSRoleValid({
-      isValid: uRole === "" ? true : false,
-      message: "Select An Role",
+      isValid: product === "" ? true : false,
+      message: "Select An Product",
     });
 
-    // if (name !== "" && email !== "" && uRole !== "" && mob.length === 12) {
-    // onSubmit({ name, email, role: uRole, mobileNo });
-    // }
+    if (product !== "" && quantity !== "") {
+      onSubmit({ name: product, quantity });
+    }
   };
 
-  const onSubmit = async ({ name, email, role, mobileNo }: SubmitData) => {
+  const onSubmit = async ({ name, quantity }: SubmitData) => {
     setState({
       ...state,
       loader: true,
     });
 
     try {
-      const response = await UserService.addUserApi(
-        name,
-        email,
-        +mobileNo,
-        role
-      );
+      const response = await PlaceOrderServices.AddOrderApi(name, +quantity);
       if (response.status === 201) {
-        // activeHandler(true);
         setState({
           tosted: true,
           loader: false,
@@ -155,17 +148,17 @@ const Form = ({ handleClose }: IProps) => {
     <>
       <form className="column" onSubmit={handleSubmit}>
         <SRole
-          uRole={uRole}
+          uRole={product}
           handleChange={handleChange}
           error={sRoleValid.isValid ? sRoleValid.message : undefined}
         />
 
         <Stack direction={"row"} gap={"20px"}>
           <OutlineInput
-            value={name}
-            type="text"
+            value={quantity}
+            type="number"
             label="Quantity"
-            handleInputChange={nameHandlerChange}
+            handleInputChange={quantityHandlerChange}
             error={nameValid.isValid ? nameValid.message : undefined}
             disabled={state.loader}
           />
@@ -184,7 +177,7 @@ const Form = ({ handleClose }: IProps) => {
             disabled={loader}
             loader={loader}
           >
-            Add Now
+            Add Order
           </Contained>
         </Box>
       </form>

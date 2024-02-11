@@ -11,7 +11,6 @@ import useStyles from "./styles";
 import { isAllNav, navigationData } from "./Data";
 import Iconify from "../../core/Iconify";
 import useUserStore from "../../store/userData";
-import useRoleStore from "../../store/role";
 import { useMemo } from "react";
 
 const SideNav = () => {
@@ -20,15 +19,12 @@ const SideNav = () => {
     data: state.data,
   }));
 
-  const { role } = useRoleStore((state) => ({
-    role: state.role,
-  }));
-
   const navData = useMemo(() => {
     // Combine role-specific and common navigation items
-    const roleSpecificNav = navigationData[role] || [];
+    const roleSpecificNav =
+      navigationData[data?.role ? data.role : "purchaseManager"] || [];
     return [...roleSpecificNav, ...isAllNav];
-  }, [role]);
+  }, [data]);
 
   return (
     <Drawer
@@ -57,7 +53,7 @@ const SideNav = () => {
                   sx={{ width: "45px", height: "45px", mr: "10px" }}
                 />
               </ListItemIcon>
-              <ListItemText primary={data?.name} secondary={data?.email} />
+              <ListItemText primary={data?.name} secondary={data?.role} />
             </ListItem>
           </List>
 

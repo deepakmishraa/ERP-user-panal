@@ -18,9 +18,10 @@ import { IProduct } from "../../../models/IProduct";
 import CircularProgressBar from "./CircularProgressBar";
 import ModelOpen from "../../../core/Model copy";
 import Update from "./Update";
+import { IBuyProduct } from "../../../models/IBuyProduct";
 // ----------------------------------------------------------------------
 interface IProps {
-  data: IProduct;
+  data: IBuyProduct;
   index: number;
 }
 // ----------------------------------------------------------------------
@@ -58,16 +59,16 @@ const TRow = ({ data, index }: IProps) => {
         <TableCell component="th" scope="row" padding="none">
           <Stack direction="row" alignItems="center" spacing={2}>
             <Avatar
-              alt={data.name}
+              alt={data.product.name}
               src={`/assets/images/avatars/avatar_${index + 1}.jpg`}
             />
             <Typography variant="subtitle2" noWrap>
-              {data.name}
+              {data.product.name}
             </Typography>
           </Stack>
         </TableCell>
         <TableCell align="left">
-          <b>50 kg / 100 kg</b>
+          <b>50 kg / {data.totalQuantity} kg</b>
         </TableCell>
 
         <TableCell align="center">

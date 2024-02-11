@@ -1,9 +1,9 @@
 import create from "zustand";
-import { IUserData } from "../models/IUserData";
+import { UserData } from "../models/IUserDetail";
 
 type Store = {
-  data: IUserData | undefined;
-  setData: (data: IUserData | undefined) => void;
+  data: UserData | undefined;
+  setData: (data: UserData | undefined) => void;
 };
 
 const useUserStore = create<Store>(
