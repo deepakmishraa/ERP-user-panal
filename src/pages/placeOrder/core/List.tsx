@@ -1,23 +1,24 @@
 import { useEffect, useState } from "react";
 import { TPagination } from "../../../core/Pagination";
-import { Paper, TableBody } from "@mui/material";
-import THeader from "../../../core/THeader";
+import { Paper, SelectChangeEvent, TableBody } from "@mui/material";
+// import THeader from "../../../core/THeader";
 import MTable from "./MTable";
 import THead from "./THead";
-import Loader from "./Loader";
 import TRow from "./TRow";
-import { IProduct } from "../../../models/IProduct";
 import { IState } from "../../../models/IState";
-import { ProductServices } from "../../../services/ProductServices";
 import Tosted from "../../../core/Tosted";
 import { IPlaceOrder } from "../../../models/IPlaceOrder";
 import { PlaceOrderServices } from "../../../services/PlaceOrder";
 import useIsPlaceOrderStore from "../../../store/isPlaceOrder";
+import NoData from "../../../core/NoData";
+import { TLoader } from "../../../core/Loader";
+import THeader from "./THeader";
 
 const List = () => {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
   const [searchInput, setSearchInput] = useState<string>("");
+  const [category, setCategory] = useState("Fruit");
 
   const [state, setState] = useState<IState>({
     loader: false,
@@ -31,31 +32,42 @@ const List = () => {
     setActive: state.setActive,
   }));
 
-  const [list, setList] = useState<IPlaceOrder[] | undefined>(undefined);
+  const [list, setList] = useState<IPlaceOrder[] | undefined>(
+    [] as IPlaceOrder[]
+  );
 
   const getAllProductList = async () => {
     try {
+      setState({ ...state, loader: true }); // Set loader to true when the operation starts
       const response = await PlaceOrderServices.getAllOrderApi();
-      if (response.status === 200) {
-        setList(response.data.token[0].items);
+      if (
+        response.status === 200 &&
+        response.data &&
+        response.data.data &&
+        response.data.data.items
+      ) {
+        setList(response.data.data.items);
         setState({ ...state, loader: false });
         setActive(false);
       } else {
-        setState({
-          loader: false,
-          tosted: true,
-          message: "Something went wrong",
-          severity: "error",
-        });
+        setList([]);
+        setState({ ...state, loader: false });
       }
     } catch (error: any) {
+      // Improved error handling
+      const errorMessage =
+        error.response?.data?.message || "An unexpected error occurred";
       setState({
         loader: false,
         tosted: true,
-        message: error.response.data.message,
+        message: errorMessage,
         severity: "error",
       });
     }
+  };
+
+  const categoryHandler = (event: SelectChangeEvent) => {
+    setCategory(event.target.value);
   };
 
   useEffect(() => {
@@ -106,23 +118,32 @@ const List = () => {
           <THeader
             searchInputHandler={searchInputHandler}
             searchInput={searchInput}
+            category={category}
+            categoryHandler={categoryHandler}
           />
           <MTable>
             <THead />
 
             <TableBody>
-              {list?.map((data, index) => {
-                return <TRow data={data} index={index} key={index} />;
-              })}
+              {list &&
+                list.length > 0 &&
+                list.map((data, index) => {
+                  return <TRow data={data} index={index} key={index} />;
+                })}
             </TableBody>
           </MTable>
-          <TPagination
-            count={24}
-            rowsPerPage={10}
-            page={0}
-            ChangePage={handleChangePage}
-            ChangeRowsPerPage={handleChangeRowsPerPage}
-          />
+          {!loader && list && list.length === 0 && <NoData />}
+          {loader && <TLoader />}
+
+          {list && list.length > 0 && (
+            <TPagination
+              count={24}
+              rowsPerPage={10}
+              page={0}
+              ChangePage={handleChangePage}
+              ChangeRowsPerPage={handleChangeRowsPerPage}
+            />
+          )}
         </Paper>
       </div>
 

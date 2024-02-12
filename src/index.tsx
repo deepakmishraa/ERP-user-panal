@@ -6,7 +6,6 @@ import { BrowserRouter } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
-// import reportWebVitals from "./reportWebVitals";
 import theme from "./hooks/theme";
 
 const root = ReactDOM.createRoot(

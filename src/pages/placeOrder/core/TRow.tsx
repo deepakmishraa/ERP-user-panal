@@ -8,14 +8,17 @@ import {
   IconButton,
   Popover,
   MenuItem,
+  Tooltip,
+  SelectChangeEvent,
+  Button,
 } from "@mui/material";
 import { Label } from "../../../core/Label";
 import Iconify from "../../../core/Iconify";
-import { faker } from "@faker-js/faker";
 import { useState, MouseEvent } from "react";
 import { Link } from "react-router-dom";
-import { IProduct } from "../../../models/IProduct";
 import { IPlaceOrder } from "../../../models/IPlaceOrder";
+import QuentityEnter from "../../../core/QuentityEnter";
+import WType from "./WType";
 // ----------------------------------------------------------------------
 interface IProps {
   data: IPlaceOrder;
@@ -23,23 +26,48 @@ interface IProps {
 }
 // ----------------------------------------------------------------------
 const TRow = ({ data, index }: IProps) => {
-  const [open, setOpen] = useState<HTMLButtonElement | null>(null);
+  const [quantity, setQuantity] = useState(data.quantity);
+  const [wType, setWType] = useState("");
+  const [sTypeValid, setSTypeValid] = useState({
+    isValid: false,
+    message: "Select An Weight Type",
+  });
 
-  const handleOpenMenu = (event: MouseEvent<HTMLButtonElement>) => {
-    setOpen(event.currentTarget);
+  const increaseClickHandler = () => {
+    setQuantity((prevQuantity) => prevQuantity + 1);
+  };
+  const decreaseClickHandler = () => {
+    setQuantity((prevQuantity) =>
+      quantity === 0 ? quantity : prevQuantity - 1
+    );
+  };
+  const InputHandler = (value: string) => {
+    if (+value > -1) {
+      setQuantity((prevQuantity) => (prevQuantity = +value));
+    }
   };
 
-  const handleCloseMenu = () => {
-    setOpen(null);
+  const weightChange = (event: SelectChangeEvent) => {
+    if (event.target.value == null) {
+      setSTypeValid({
+        isValid: true,
+        message: "Select an role",
+      });
+    } else {
+      setWType(event.target.value);
+      setSTypeValid({
+        isValid: false,
+        message: "select an Role",
+      });
+    }
   };
+
   return (
     <>
       <TableRow hover role="checkbox" key={index} sx={{ cursor: "pointer" }}>
-        <TableCell padding="checkbox">
-          <Checkbox color="primary" />
-        </TableCell>
-        <TableCell component="th" scope="row" padding="none">
-          <Stack direction="row" alignItems="center" spacing={2}>
+        <TableCell align="center">{index + 1}</TableCell>
+        <TableCell align="left">
+          <Stack direction="row" alignItems="center" spacing={1}>
             <Avatar
               alt={data.product.name}
               src={`/assets/images/avatars/avatar_${index + 1}.jpg`}
@@ -49,44 +77,34 @@ const TRow = ({ data, index }: IProps) => {
             </Typography>
           </Stack>
         </TableCell>
-        <TableCell align="left">{data.product.description}</TableCell>
+        <TableCell align="center">Fruit</TableCell>
 
         <TableCell align="center">
-          <Label color={(index / 2 == 0 && "error") || "success"}>
-            {data.quantity}
-          </Label>
+          <QuentityEnter
+            quantity={quantity}
+            increaseClickHandler={increaseClickHandler}
+            decreaseClickHandler={decreaseClickHandler}
+            InputHandler={InputHandler}
+          />
+        </TableCell>
+        <TableCell align="center">
+          <WType uRole={wType} handleChange={weightChange} />
         </TableCell>
         <TableCell align="right">
-          <IconButton onClick={handleOpenMenu}>
-            <Iconify icon="eva:more-vertical-fill" />
-          </IconButton>
+          <Stack direction={"row"} gap={"5px"} justifyContent={"end"}>
+            <Button
+              startIcon={<Iconify icon="eva:edit-fill" />}
+              variant="outlined"
+              color="primary"
+            >
+              Add
+            </Button>
+            <IconButton sx={{ color: "error.main" }}>
+              <Iconify icon="eva:trash-2-outline" />
+            </IconButton>
+          </Stack>
         </TableCell>
       </TableRow>
-      <Popover
-        open={!!open}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-        PaperProps={{
-          sx: { width: 140 },
-        }}
-      >
-        <MenuItem onClick={handleCloseMenu}>
-          <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-        <Link to={`/vessel/1`}>
-          <MenuItem sx={{ color: "info.main" }}>
-            <Iconify icon="eva:eye-outline" sx={{ mr: 2 }} />
-            View
-          </MenuItem>
-        </Link>
-        <MenuItem sx={{ color: "error.main" }}>
-          <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
-      </Popover>
     </>
   );
 };

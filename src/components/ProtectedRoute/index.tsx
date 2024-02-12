@@ -20,20 +20,6 @@ const ProtectedRoute: React.FC = () => {
   const cookies = new Cookies();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("Token");
-    setToken(storedToken);
-    const handleStorage = (event: StorageEvent) => {
-      if (event.key === "Token") {
-        setToken(event.newValue);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-    return () => {
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, []);
-
   const getTokenDetail = async () => {
     try {
       const response = await TokenService.getTokenDetail();
@@ -50,7 +36,9 @@ const ProtectedRoute: React.FC = () => {
   };
 
   useEffect(() => {
-    getTokenDetail();
+    if (token) {
+      getTokenDetail();
+    }
   }, [token]);
 
   return cookies.get("management-token") ? (

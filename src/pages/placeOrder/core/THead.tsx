@@ -5,11 +5,13 @@ const THead = () => {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox color="primary" />
-        </TableCell>
         {THeading.map((data, index) => (
-          <TableCell key={index} align={data.align} padding={"normal"}>
+          <TableCell
+            size={"large" as any}
+            key={index}
+            align={data.align}
+            padding={"normal"}
+          >
             {data.name}
           </TableCell>
         ))}

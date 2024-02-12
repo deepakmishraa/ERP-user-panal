@@ -304,6 +304,9 @@ const theme = createTheme({
             background: lightPalette.primary.dark,
           },
         },
+        outlinedPrimary: {
+          borderRadius: "1rem",
+        },
       },
     },
     MuiTable: {
@@ -322,7 +325,9 @@ const theme = createTheme({
     },
     MuiTableCell: {
       styleOverrides: {
-        root: {},
+        // root: {
+        //   padding: "1rem",
+        // },
         sizeMedium: {
           padding: "0.7rem",
         },

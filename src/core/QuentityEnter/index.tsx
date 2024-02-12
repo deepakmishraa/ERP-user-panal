@@ -1,7 +1,6 @@
-import {  IconButton, InputBase, Paper } from "@mui/material";
+import { Box, IconButton, InputBase, Paper, Stack } from "@mui/material";
 import Iconify from "../Iconify";
-// import RemoveIcon from "@mui/icons-material/Remove";
-// import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import CenterBox from "../CenterBox";
 
 interface QuentityEnterInterFace {
   quantity: number;
@@ -16,61 +15,53 @@ const QuentityEnter = ({
   decreaseClickHandler,
   InputHandler,
 }: QuentityEnterInterFace) => {
-  const paperCss = {
-    display: "flex",
-    alignItems: "center",
-    width: "100%",
-    justifyContent: "center",
-    borderRadius: "6px",
-    border: "1px solid #ccc",
-    boxSizing: "border-box",
-    p: 0,
-    m: 0,
-  };
-
   return (
-    <Paper component="form" sx={paperCss} elevation={0}>
-      <IconButton
-        sx={{
-          px: "10px",
-          borderRight: "1px dashed #ccc",
-          background: "#f7f7f7",
-          borderRadius: "6px 0px 0px 6px",
-        }}
-        onClick={decreaseClickHandler}
-        disabled={quantity > 0 ? false : true}
+    <CenterBox height="100%">
+      <Stack
+        direction={"row"}
+        gap={"5px"}
+        width={"150px"}
+        justifyContent={"center"}
       >
-        {/* <RemoveIcon
-          sx={{ p: 0, m: 0, color: "#000" }}
-        /> */}
-        <Iconify icon="pajamas:remove-all"/>
-      </IconButton>
-      <InputBase
-        sx={{ ml: 1, flex: 1, p: 0.5 }}
-        placeholder=""
-        size="medium"
-        inputProps={{ min: 0, max: 999 }}
-        value={quantity>0?quantity:""}
-        type="number"
-        onChange={(e: any) => InputHandler(e.target.value)}
-      />
-
-      <IconButton
-        sx={{
-          px: "10px",
-          borderRadius: "0px 6px 6px 0px",
-          borderLeft: "1px solid #ccc",
-          background: "#f7f7f7",
-        }}
-        aria-label="directions"
-        onClick={increaseClickHandler}
-      >
-        {/* <AddOutlinedIcon
-          sx={{ p: 0, m: 0, color: "#000" }}  
-        /> */}
-        <Iconify icon="mingcute:add-fill"/>
-      </IconButton>
-    </Paper>
+        <IconButton
+          onClick={decreaseClickHandler}
+          color="error"
+          disabled={quantity > 0 ? false : true}
+        >
+          <Iconify icon="streamline:subtract-1-solid" />
+        </IconButton>
+        <InputBase
+          sx={{
+            flex: 1,
+            border: (theme) => `1px dashed ${theme.palette.divider}`,
+            borderRadius: "10px",
+            width: "50px",
+            "& .MuiInputBase": {
+              textAlign: "center",
+            },
+            "& .MuiInputBase-input": {
+              textAlign: "center",
+              fontSize: "14px",
+              color: "#000",
+              fontWeight: "500",
+            },
+          }}
+          placeholder=""
+          size="medium"
+          inputProps={{ min: 0, max: 999 }}
+          value={quantity > 0 ? quantity : ""}
+          type="number"
+          onChange={(e: any) => InputHandler(e.target.value)}
+        />
+        <IconButton
+          aria-label="directions"
+          color="primary"
+          onClick={increaseClickHandler}
+        >
+          <Iconify icon="mingcute:add-fill" />
+        </IconButton>
+      </Stack>
+    </CenterBox>
   );
 };
 export default QuentityEnter;
