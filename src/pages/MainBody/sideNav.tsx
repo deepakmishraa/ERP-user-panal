@@ -12,6 +12,7 @@ import { isAllNav, navigationData } from "./Data";
 import Iconify from "../../core/Iconify";
 import useUserStore from "../../store/userData";
 import { useMemo } from "react";
+import { NavCard } from "./core";
 
 const SideNav = () => {
   const { classes } = useStyles();
@@ -59,27 +60,7 @@ const SideNav = () => {
 
           <List>
             {navData.map((data, index) => {
-              return (
-                <NavLink
-                  to={data.path}
-                  className={({ isActive }) => (isActive ? "active" : "")}
-                  key={index}
-                >
-                  {({ isActive }) => (
-                    <ListItem
-                      selected={isActive == true ? true : false}
-                      color="primary"
-                    >
-                      <ListItemIcon>
-                        <IconButton color={isActive ? "primary" : "default"}>
-                          <Iconify icon={data.iconify} />
-                        </IconButton>
-                      </ListItemIcon>
-                      <ListItemText primary={data.name} />
-                    </ListItem>
-                  )}
-                </NavLink>
-              );
+              return <NavCard data={data} key={index} />;
             })}
           </List>
         </Box>

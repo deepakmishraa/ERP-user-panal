@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { TPagination } from "../../../core/Pagination";
+import { TPagination } from "../../../../core/Pagination";
 import { Paper, SelectChangeEvent, TableBody } from "@mui/material";
 // import THeader from "../../../core/THeader";
 import MTable from "./MTable";
 import THead from "./THead";
 import TRow from "./TRow";
-import { IState } from "../../../models/IState";
-import Tosted from "../../../core/Tosted";
-import { IPlaceOrder } from "../../../models/IPlaceOrder";
-import { PlaceOrderServices } from "../../../services/PlaceOrder";
-import useIsPlaceOrderStore from "../../../store/isPlaceOrder";
-import NoData from "../../../core/NoData";
-import { TLoader } from "../../../core/Loader";
+import { IState } from "../../../../models/IState";
+import Tosted from "../../../../core/Tosted";
+import { IPlaceOrder } from "../../../../models/IPlaceOrder";
+import { PlaceOrderServices } from "../../../../services/PlaceOrder";
+import useIsPlaceOrderStore from "../../../../store/isPlaceOrder";
+import NoData from "../../../../core/NoData";
+import { TLoader } from "../../../../core/Loader";
 import THeader from "./THeader";
 
 const List = () => {

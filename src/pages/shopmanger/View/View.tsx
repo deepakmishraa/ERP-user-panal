@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { MainHead } from "../../core/bodyHead";
+import { MainHead } from "../../../core/bodyHead";
 import { List, Add } from "./core";
 
-function PlaceOrder() {
+function View() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(false);
 
@@ -39,4 +39,4 @@ function PlaceOrder() {
   );
 }
 
-export default PlaceOrder;
+export default View;

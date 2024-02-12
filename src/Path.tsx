@@ -6,7 +6,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { Order } from "./pages/order";
 import { Product } from "./pages/product";
 import { Category } from "./pages/category";
-import PlaceOrder from "./pages/placeOrder/PlaceOrder";
+import View from "./pages/shopmanger/View/View";
 import {
   MShop,
   MProcurement,
@@ -14,6 +14,7 @@ import {
   MPurchase,
 } from "./components/RouteValidate";
 import { BuyOrder } from "./pages/buyOrder";
+import { Add } from "./pages/shopmanger/Add";
 const Dashbord = lazy(() => import("./pages/dashboard"));
 
 const Path = () => {
@@ -61,10 +62,18 @@ const Path = () => {
 
           <Route element={<MShop />}>
             <Route
-              path="/place-order"
+              path="/place-order/view"
               element={
                 <Suspense fallback={<CircularProgress disableShrink />}>
-                  <PlaceOrder />
+                  <View />
+                </Suspense>
+              }
+            />
+            <Route
+              path="/place-order/add"
+              element={
+                <Suspense fallback={<CircularProgress disableShrink />}>
+                  <Add />
                 </Suspense>
               }
             />

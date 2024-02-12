@@ -1,4 +1,12 @@
-export const shopManager = [
+export interface IMenuItem {
+  id: number;
+  name: string;
+  iconify: string;
+  path?: string;
+  list?: IMenuItem[];
+}
+
+export const shopManager: IMenuItem[] = [
   {
     id: 1,
     name: "Dashboard",
@@ -8,12 +16,25 @@ export const shopManager = [
   {
     id: 2,
     name: "Place Order",
-    path: "/place-order",
     iconify: "lets-icons:order-light",
+    list: [
+      {
+        id: 1,
+        name: "View Order",
+        iconify: "lets-icons:view-light",
+        path: "/place-order/view",
+      },
+      {
+        id: 2,
+        name: "Add Order",
+        iconify: "mingcute:add-fill",
+        path: "/place-order/add",
+      },
+    ],
   },
 ];
 
-export const purchaseManager = [
+export const purchaseManager: IMenuItem[] = [
   {
     id: 1,
     name: "Dashboard",
@@ -28,7 +49,7 @@ export const purchaseManager = [
   },
 ];
 
-export const procurementManager = [
+export const procurementManager: IMenuItem[] = [
   {
     id: 1,
     name: "Dashboard",
@@ -43,7 +64,7 @@ export const procurementManager = [
   },
 ];
 
-export const allocationManager = [
+export const allocationManager: IMenuItem[] = [
   {
     id: 1,
     name: "Dashboard",
@@ -58,7 +79,7 @@ export const allocationManager = [
   },
 ];
 
-export const isAllNav = [
+export const isAllNav: IMenuItem[] = [
   {
     id: 1,
     name: "Product",

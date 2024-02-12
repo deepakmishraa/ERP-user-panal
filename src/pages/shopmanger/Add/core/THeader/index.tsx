@@ -1,6 +1,6 @@
 import { IconButton, SelectChangeEvent, Stack, Tooltip } from "@mui/material";
-import { BasicSearch } from "../../../../core/SearchBar";
-import Iconify from "../../../../core/Iconify";
+import { BasicSearch } from "../../../../../core/SearchBar";
+import Iconify from "../../../../../core/Iconify";
 import CType from "../CType";
 import { useState } from "react";
 // ----------------------------------------------------------------------

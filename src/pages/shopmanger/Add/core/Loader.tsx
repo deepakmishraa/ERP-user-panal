@@ -8,10 +8,10 @@ import {
 } from "@mui/material";
 // import { Label } from "../../Label";
 // import { Label } from "../../../../core/Label";
-import { Label } from "../../../core/Label";
+import { Label } from "../../../../core/Label";
 
-import Iconify from "../../../core/Iconify";
-import CenterBox from "../../../core/CenterBox";
+import Iconify from "../../../../core/Iconify";
+import CenterBox from "../../../../core/CenterBox";
 // ----------------------------------------------------------------------
 
 const Loader = () => {

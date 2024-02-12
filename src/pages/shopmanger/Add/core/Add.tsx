@@ -1,6 +1,6 @@
 import { Container, Typography, Paper, Box } from "@mui/material";
-import ModelOpen from "../../../core/Model copy";
-import { IModel } from "../../../models/IModel";
+import ModelOpen from "../../../../core/Model copy";
+import { IModel } from "../../../../models/IModel";
 import Form from "./Form";
 
 const Add = ({

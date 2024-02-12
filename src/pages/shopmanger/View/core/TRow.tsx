@@ -12,12 +12,12 @@ import {
   SelectChangeEvent,
   Button,
 } from "@mui/material";
-import { Label } from "../../../core/Label";
-import Iconify from "../../../core/Iconify";
+import { Label } from "../../../../core/Label";
+import Iconify from "../../../../core/Iconify";
 import { useState, MouseEvent } from "react";
 import { Link } from "react-router-dom";
-import { IPlaceOrder } from "../../../models/IPlaceOrder";
-import QuentityEnter from "../../../core/QuentityEnter";
+import { IPlaceOrder } from "../../../../models/IPlaceOrder";
+import QuentityEnter from "../../../../core/QuentityEnter";
 import WType from "./WType";
 // ----------------------------------------------------------------------
 interface IProps {

@@ -5,8 +5,8 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { FormHelperText, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 
-import { IProduct } from "../../../models/IProduct";
-import { ProductServices } from "../../../services/ProductServices";
+import { IProduct } from "../../../../models/IProduct";
+import { ProductServices } from "../../../../services/ProductServices";
 
 interface IProps {
   uRole: string;
