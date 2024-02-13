@@ -28,8 +28,13 @@ const List = () => {
   const getAllProductList = async () => {
     try {
       const response = await ProductServices.getAllProductApi();
-      if (response.status === 200) {
-        setList(response.data.data);
+      if (
+        response.status === 200 &&
+        response.data &&
+        response.data.data &&
+        response.data.data.products
+      ) {
+        setList(response.data.data.products);
         setState({ ...state, loader: false });
       } else {
         setState({

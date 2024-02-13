@@ -1,0 +1,14 @@
+import { IUmoType } from "./IUmoType";
+
+export interface IOrderList {
+  productId: string;
+  productName: string;
+  quantity: number;
+  UOM: IUmoType;
+  category: Category;
+  description: string;
+}
+export interface Category {
+  id: string;
+  name: string;
+}

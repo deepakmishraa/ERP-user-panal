@@ -7,6 +7,5 @@ export interface IProduct {
   category: Category;
 }
 export interface Category {
-  _id: string;
   name: string;
 }

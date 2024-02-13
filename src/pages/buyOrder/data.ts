@@ -61,3 +61,18 @@ export const users = [...Array(24)].map((_, index) => ({
     "Full Stack Developer",
   ]),
 }));
+
+export const shoplist = [
+  {
+    shopname: 1,
+    quantity: "10kg",
+  },
+  {
+    shopname: 5,
+    quantity: "30kg",
+  },
+  {
+    shopname: 16,
+    quantity: "30kg",
+  },
+];

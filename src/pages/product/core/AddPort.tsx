@@ -21,7 +21,7 @@ const AddPort = ({
     >
       <Container maxWidth="xs" component={Paper} elevation={2}>
         <Typography variant="h4" textAlign={"start"} gutterBottom>
-          Add Port
+          {title}
         </Typography>
         {/* <AddPortForm /> */}
       </Container>

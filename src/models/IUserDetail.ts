@@ -14,6 +14,11 @@ export type RoleType =
 export interface UserData {
   _id: string;
   name: string;
-  email?: string;
   role: RoleType;
+  shop?: Shop;
+}
+export interface Shop {
+  _id: string;
+  name: string;
+  area: string;
 }

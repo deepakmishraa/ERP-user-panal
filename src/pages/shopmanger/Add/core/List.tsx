@@ -152,13 +152,6 @@ const List = () => {
           {loader && <TLoader />}
 
           {list && list.length > 0 && (
-            // <TPagination
-            //   count={24}
-            //   rowsPerPage={rowsPerPage}
-            //   page={page}
-            //   ChangePage={handleChangePage}
-            //   ChangeRowsPerPage={handleChangeRowsPerPage}
-            // />
             <TablePagination
               component="div"
               count={+totalCount}

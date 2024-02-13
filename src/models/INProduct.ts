@@ -1,5 +1,8 @@
+import { IUmoType } from "./IUmoType";
+
 export interface INProduct {
   _id: string;
+  UOM: IUmoType;
   name: string;
   slug: string;
   description: string;

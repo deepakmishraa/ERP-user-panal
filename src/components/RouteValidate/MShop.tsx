@@ -13,8 +13,7 @@ const MShop: React.FC = () => {
     data: state.data,
     setData: state.setData,
   }));
-  const { setToken, token } = useTokenStore((state) => ({
-    setToken: state.setToken,
+  const { token } = useTokenStore((state) => ({
     token: state.token,
   }));
 

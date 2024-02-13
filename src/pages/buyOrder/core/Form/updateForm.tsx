@@ -3,15 +3,15 @@ import { OutlineInput } from "../../../../core/InputField";
 import { useState } from "react";
 import { IState } from "../../../../models/IState";
 import Contained from "../../../../core/Button/Contained";
-import SRole from "../SRole";
-
 import { SelectChangeEvent } from "@mui/material/Select";
 import { UserService } from "../../../../services/UserServices";
 import Tosted from "../../../../core/Tosted";
 import useIsUserStore from "../../../../store/isUser";
 import WType from "../../../../core/WType";
-import { IProduct } from "../../../../models/IProduct";
-import { IBuyProduct } from "../../../../models/IBuyProduct";
+import { IOrderList } from "../../../../models/IOrderList";
+import TUpdateForm from "./TUpdate";
+import { shoplist } from "../../data";
+import ShopTable from "./ShopTable";
 
 type SubmitData = {
   name: string;
@@ -22,7 +22,7 @@ type SubmitData = {
 
 interface IProps {
   handleClose: () => void;
-  data: IBuyProduct;
+  data: IOrderList;
 }
 
 const UpdateForm = ({ handleClose, data }: IProps) => {
@@ -40,7 +40,7 @@ const UpdateForm = ({ handleClose, data }: IProps) => {
     message: "Fill the Name",
   });
 
-  const [uRole, setURole] = useState(data.product._id);
+  const [uRole, setURole] = useState(data.productId);
   const [sRoleValid, setSRoleValid] = useState({
     isValid: false,
     message: "Select An Product",
@@ -159,25 +159,25 @@ const UpdateForm = ({ handleClose, data }: IProps) => {
       <form className="column" onSubmit={handleSubmit}>
         <Stack direction="row" alignItems="center" spacing={1} pb={2}>
           <Avatar
-            alt={data.product.name}
+            alt={data.productName}
             src={`/assets/images/avatars/avatar_${1 + 1}.jpg`}
             sx={{ height: "40px", width: "40px" }}
           />
           <Typography variant="subtitle2" noWrap>
-            {data.product._id} <br />
-            {data.totalQuantity} Kg
+            {data.productName} <br />
+            {data.quantity} Kg
           </Typography>
         </Stack>
-        <OutlineInput
-          value={name}
-          type="text"
-          label="Shop No"
-          handleInputChange={nameHandlerChange}
-          error={nameValid.isValid ? nameValid.message : undefined}
-          disabled={state.loader}
-        />
 
         <Stack direction={"row"} gap={"20px"}>
+          <OutlineInput
+            value={name}
+            type="text"
+            label="Shop No"
+            handleInputChange={nameHandlerChange}
+            error={nameValid.isValid ? nameValid.message : undefined}
+            disabled={state.loader}
+          />
           <OutlineInput
             value={name}
             type="text"
@@ -193,7 +193,8 @@ const UpdateForm = ({ handleClose, data }: IProps) => {
           />
         </Stack>
 
-        <br />
+        <ShopTable />
+
         <Box textAlign={"center"} pt={1}>
           <Contained
             type="submit"

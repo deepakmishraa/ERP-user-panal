@@ -11,17 +11,14 @@ import {
 } from "@mui/material";
 import { Label } from "../../../core/Label";
 import Iconify from "../../../core/Iconify";
-import { faker } from "@faker-js/faker";
 import { useState, MouseEvent } from "react";
 import { Link } from "react-router-dom";
-import { IProduct } from "../../../models/IProduct";
 import CircularProgressBar from "./CircularProgressBar";
-import ModelOpen from "../../../core/Model copy";
 import Update from "./Update";
-import { IBuyProduct } from "../../../models/IBuyProduct";
+import { IOrderList } from "../../../models/IOrderList";
 // ----------------------------------------------------------------------
 interface IProps {
-  data: IBuyProduct;
+  data: IOrderList;
   index: number;
 }
 // ----------------------------------------------------------------------
@@ -59,16 +56,16 @@ const TRow = ({ data, index }: IProps) => {
         <TableCell component="th" scope="row" padding="none">
           <Stack direction="row" alignItems="center" spacing={2}>
             <Avatar
-              alt={data.product.name}
+              alt={data.productName}
               src={`/assets/images/avatars/avatar_${index + 1}.jpg`}
             />
             <Typography variant="subtitle2" noWrap>
-              {data.product.name}
+              {data.productName}
             </Typography>
           </Stack>
         </TableCell>
         <TableCell align="left">
-          <b>50 kg / {data.totalQuantity} kg</b>
+          <b>50 kg / {data.quantity} kg</b>
         </TableCell>
 
         <TableCell align="center">

@@ -10,6 +10,8 @@ import {
   Popover,
   MenuItem,
   Menu,
+  Stack,
+  Typography,
 } from "@mui/material";
 import useStyles from "./styles";
 import useModeStore from "../../store/mode";
@@ -18,11 +20,16 @@ import { useState, MouseEvent } from "react";
 import { BasicSearch } from "../../core/SearchBar";
 import Logo from "../../core/Logo";
 import Iconify from "../../core/Iconify";
+import useUserStore from "../../store/userData";
 
 const TopNav = () => {
   const { mode, setMode } = useModeStore((state) => ({
     mode: state.mode,
     setMode: state.setMode,
+  }));
+  const { data, setData } = useUserStore((state) => ({
+    data: state.data,
+    setData: state.setData,
   }));
   const [searchInput, setSearchInput] = useState<string>("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -49,16 +56,33 @@ const TopNav = () => {
         }}
       >
         <Toolbar>
-          <SpaceBetween width="100%" px={1}>
-            <Box display={"flex"} gap={"70px"}>
-              <Logo />
-              <BasicSearch
-                searchInputHandler={searchInputHandler}
-                searchInput={searchInput}
-                width={"250px"}
-              />
-            </Box>
+          <Stack direction={"row"} justifyContent={"end"} width={"100%"}>
             <Box display={"flex"} gap={"12px"}>
+              {data?.shop && (
+                <Stack
+                  sx={{
+                    background: (theme) => theme.palette.primary.light,
+                    px: 1,
+                    borderRadius: "10px",
+                  }}
+                  direction={"row"}
+                  gap={"5px"}
+                  alignItems={"center"}
+                >
+                  <Iconify icon="akar-icons:location" width={23} />
+                  <Typography
+                    component={"span"}
+                    fontSize={"11px"}
+                    fontWeight={"500"}
+                  >
+                    {data?.shop?.name.toUpperCase()}
+                    <Typography fontWeight={"700"} fontSize={"13px"}>
+                      {data?.shop?.area}
+                    </Typography>
+                  </Typography>
+                </Stack>
+              )}
+
               <IconButton size="small">
                 <img src={"/assets/icons/ic_flag_en.svg"} alt="profile" />
               </IconButton>
@@ -91,7 +115,7 @@ const TopNav = () => {
                 />
               </IconButton>
             </Box>
-          </SpaceBetween>
+          </Stack>
         </Toolbar>
       </AppBar>
       <Menu

@@ -1,27 +1,23 @@
 import {
   TableRow,
   TableCell,
-  Checkbox,
   Stack,
   Avatar,
   Typography,
   IconButton,
-  Popover,
-  MenuItem,
-  Tooltip,
   SelectChangeEvent,
   Button,
-  Box,
 } from "@mui/material";
 import Iconify from "../../../../core/Iconify";
-import { useState, MouseEvent, useEffect } from "react";
+import { useState, useEffect } from "react";
 import QuentityEnter from "../../../../core/QuentityEnter";
-import WType from "./WType";
 import { INProduct } from "../../../../models/INProduct";
 import { PlaceOrderServices } from "../../../../services/PlaceOrder";
 import { IState } from "../../../../models/IState";
 import CircularLoader from "../../../../core/CircularLoader";
 import Tosted from "../../../../core/Tosted";
+import WType from "../../../../components/WType";
+import { IUmoType } from "../../../../models/IUmoType";
 // ----------------------------------------------------------------------
 interface IProps {
   data: INProduct;
@@ -34,7 +30,7 @@ type SubmitData = {
 // ----------------------------------------------------------------------
 const TRow = ({ data, index }: IProps) => {
   const [quantity, setQuantity] = useState(data.requirementQuantity);
-  const [wType, setWType] = useState("");
+  const [wType, setWType] = useState<IUmoType>(data.UOM);
   const [product, setProduct] = useState<INProduct>(data);
 
   const [state, setState] = useState<IState>({
@@ -59,7 +55,9 @@ const TRow = ({ data, index }: IProps) => {
   };
 
   const weightChange = (event: SelectChangeEvent) => {
-    setWType(event.target.value);
+    if (event.target.value === "Kg" || event.target.value === "PCS") {
+      setWType(event.target.value);
+    }
   };
 
   useEffect(() => {
@@ -73,7 +71,11 @@ const TRow = ({ data, index }: IProps) => {
     });
 
     try {
-      const response = await PlaceOrderServices.AddOrderApi(name, quantity);
+      const response = await PlaceOrderServices.AddOrderApi(
+        name,
+        quantity,
+        wType
+      );
       if (response.status === 200) {
         setState({
           tosted: true,

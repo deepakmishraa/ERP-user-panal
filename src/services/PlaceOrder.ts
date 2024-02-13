@@ -1,8 +1,14 @@
 import { InstanceAxios } from "../hooks/axiosConfig";
+import { IUmoType } from "../models/IUmoType";
 
 export class PlaceOrderServices {
-  public static getAllOrderApi() {
-    return InstanceAxios().get("/order/requirement");
+  public static getAllOrderApi(page?: number, pageSize?: number) {
+    return InstanceAxios().get("/order/requirement", {
+      params: {
+        page: page,
+        limit: pageSize,
+      },
+    });
   }
 
   public static getAllProductApi(
@@ -19,10 +25,11 @@ export class PlaceOrderServices {
     });
   }
 
-  public static AddOrderApi(product: string, quantity: number) {
+  public static AddOrderApi(product: string, quantity: number, umo: IUmoType) {
     const data = {
       product: product,
       quantity: quantity,
+      UOM: umo,
     };
     return InstanceAxios().post("/order/requirement/add", data);
   }

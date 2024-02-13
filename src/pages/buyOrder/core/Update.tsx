@@ -2,6 +2,7 @@ import { Container, Typography, Paper, Box } from "@mui/material";
 import ModelOpen from "../../../core/Model copy";
 import { UpdateForm } from "./Form";
 import { IBuyProduct } from "../../../models/IBuyProduct";
+import { IOrderList } from "../../../models/IOrderList";
 
 interface IModel {
   open: boolean;
@@ -11,7 +12,7 @@ interface IModel {
   children?: React.ReactNode;
   title?: string;
   subTitle?: string;
-  data: IBuyProduct;
+  data: IOrderList;
 }
 
 const Update = ({

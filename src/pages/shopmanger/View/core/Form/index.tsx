@@ -115,7 +115,11 @@ const Form = ({ handleClose }: IProps) => {
     });
 
     try {
-      const response = await PlaceOrderServices.AddOrderApi(name, +quantity);
+      const response = await PlaceOrderServices.AddOrderApi(
+        name,
+        +quantity,
+        "Kg"
+      );
       if (response.status === 200) {
         setState({
           tosted: true,

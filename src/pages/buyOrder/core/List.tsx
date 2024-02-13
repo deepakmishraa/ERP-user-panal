@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import { TPagination } from "../../../core/Pagination";
-import { Paper, TableBody } from "@mui/material";
+import { Paper, TableBody, TablePagination } from "@mui/material";
 import THeader from "../../../core/THeader";
 import MTable from "./MTable";
 import THead from "./THead";
 import TRow from "./TRow";
 import { IState } from "../../../models/IState";
-import { ProductServices } from "../../../services/ProductServices";
 import Tosted from "../../../core/Tosted";
-import { IBuyProduct } from "../../../models/IBuyProduct";
+
 import { PlaceOrderServices } from "../../../services/PlaceOrder";
+import { IOrderList } from "../../../models/IOrderList";
 
 const List = () => {
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [totalCount, setTotalCount] = useState("");
+  const [page, setPage] = useState(1);
+
   const [searchInput, setSearchInput] = useState<string>("");
 
   const [state, setState] = useState<IState>({
@@ -23,13 +25,20 @@ const List = () => {
     message: "",
   });
 
-  const [list, setList] = useState<IBuyProduct[] | undefined>(undefined);
+  const [list, setList] = useState<IOrderList[] | undefined>(undefined);
 
   const getAllProductList = async () => {
     try {
       const response = await PlaceOrderServices.getAllOrderApi();
-      if (response.status === 200) {
-        setList(response.data.token);
+      if (
+        response.status === 200 &&
+        response.data &&
+        response.data.token &&
+        response.data.token.products
+      ) {
+        setTotalCount(response.data.token.totalItems);
+        setPage(response.data.token.currentPage);
+        setList(response.data.token.products);
         setState({ ...state, loader: false });
       } else {
         setState({
@@ -67,6 +76,17 @@ const List = () => {
     setPage(0);
   };
 
+  useEffect(() => {
+    getAllProductList();
+  }, [rowsPerPage, page]);
+
+  const getRowsPerPageOptions = () => {
+    if (+totalCount <= 10) {
+      return []; // returns an empty array if totalCount is 10 or less
+    }
+    return [10, 25, 50];
+  };
+
   const { loader, message, severity, tosted } = state;
   const handleClose = () => {
     if (state.tosted) {
@@ -101,12 +121,15 @@ const List = () => {
               })}
             </TableBody>
           </MTable>
-          <TPagination
-            count={24}
-            rowsPerPage={10}
-            page={0}
-            ChangePage={handleChangePage}
-            ChangeRowsPerPage={handleChangeRowsPerPage}
+
+          <TablePagination
+            component="div"
+            count={+totalCount}
+            page={+page - 1}
+            onPageChange={handleChangePage}
+            rowsPerPage={+rowsPerPage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            rowsPerPageOptions={getRowsPerPageOptions()}
           />
         </Paper>
       </div>
