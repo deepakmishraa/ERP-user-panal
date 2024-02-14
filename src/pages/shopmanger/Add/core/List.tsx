@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-
 import {
+  IconButton,
   Paper,
   SelectChangeEvent,
+  Stack,
   TableBody,
   TablePagination,
+  Typography,
 } from "@mui/material";
-
 import MTable from "./MTable";
 import THead from "./THead";
 import TRow from "./TRow";
@@ -18,14 +19,15 @@ import NoData from "../../../../core/NoData";
 import { TLoader } from "../../../../core/Loader";
 import THeader from "./THeader";
 import { INProduct } from "../../../../models/INProduct";
+import Iconify from "../../../../core/Iconify";
 
 const List = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalCount, setTotalCount] = useState("");
   const [page, setPage] = useState(1);
-
   const [searchInput, setSearchInput] = useState<string>("");
-  const [category, setCategory] = useState("Fruit");
+  const [category, setCategory] = useState("");
+  const [selected, setSelected] = useState<string[]>([]);
 
   const [state, setState] = useState<IState>({
     loader: false,
@@ -47,7 +49,8 @@ const List = () => {
       setList([]);
       const response = await PlaceOrderServices.getAllProductApi(
         page,
-        rowsPerPage
+        rowsPerPage,
+        category
       );
       if (response.status === 200 && response.data && response.data.data) {
         setList(response.data.data.products);
@@ -71,13 +74,71 @@ const List = () => {
     }
   };
 
+  const deleteItemHandler = async () => {
+    try {
+      setState({ ...state, loader: true }); // Set loader to true when the operation starts
+      setList([]);
+      const response = await PlaceOrderServices.deleteRequirementItem(selected);
+      if (response.status === 200) {
+        alert("Delete");
+        getAllProductList();
+      } else {
+        // setList([]);
+        // setState({ ...state, loader: false });
+        alert("Some thing went wrong");
+      }
+    } catch (error: any) {
+      // Improved error handling
+      const errorMessage =
+        error.response?.data?.message || "An unexpected error occurred";
+      setState({
+        loader: false,
+        tosted: true,
+        message: errorMessage,
+        severity: "error",
+      });
+    }
+  };
+
+  const handleSelect = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    id: string
+  ): void => {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected: string[] = [];
+
+    // Logic to add or remove from selection
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex >= 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1)
+      );
+    }
+
+    setSelected(newSelected);
+  };
+
+  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      if (list && list.length > 0) {
+        const newSelecteds = list?.map((n) => n._id);
+        setSelected(newSelecteds);
+        return;
+      } else {
+        setSelected([]);
+      }
+    }
+  };
+
   const categoryHandler = (event: SelectChangeEvent) => {
     setCategory(event.target.value);
   };
 
   useEffect(() => {
     getAllProductList();
-  }, [rowsPerPage, page]);
+  }, [rowsPerPage, page, category]);
 
   const getRowsPerPageOptions = () => {
     if (+totalCount <= 10) {
@@ -131,20 +192,50 @@ const List = () => {
     <>
       <div>
         <Paper sx={{ width: "100%" }} elevation={3}>
-          <THeader
-            searchInputHandler={searchInputHandler}
-            searchInput={searchInput}
-            category={category}
-            categoryHandler={categoryHandler}
-          />
+          {selected.length > 0 ? (
+            <Stack
+              px={4}
+              py={2.5}
+              direction={"row"}
+              justifyContent={"space-between"}
+              alignItems={"center"}
+
+              // sx={{ background: (theme) => theme.palette.primary.light }}
+            >
+              <Typography variant="h3" color={"primary.main"}>
+                {selected.length + 1} Select
+              </Typography>
+              <IconButton color="primary" onClick={deleteItemHandler}>
+                <Iconify icon="mingcute:delete-2-line" />
+              </IconButton>
+            </Stack>
+          ) : (
+            <>
+              <THeader
+                searchInputHandler={searchInputHandler}
+                searchInput={searchInput}
+                category={category}
+                categoryHandler={categoryHandler}
+              />
+            </>
+          )}
           <MTable>
-            <THead />
+            <THead handleSelectAllClick={handleSelectAllClick} />
 
             <TableBody>
               {list &&
                 list.length > 0 &&
                 list.map((data, index) => {
-                  return <TRow data={data} index={index} key={index} />;
+                  const isItemSelected = selected.indexOf(data._id) !== -1;
+                  return (
+                    <TRow
+                      data={data}
+                      index={index}
+                      key={data._id} // Assuming _id is unique
+                      isSelected={isItemSelected}
+                      handleSelect={handleSelect}
+                    />
+                  );
                 })}
             </TableBody>
           </MTable>

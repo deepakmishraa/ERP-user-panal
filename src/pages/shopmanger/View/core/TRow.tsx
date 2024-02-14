@@ -7,11 +7,11 @@ import {
   IconButton,
   SelectChangeEvent,
   Button,
+  Checkbox,
 } from "@mui/material";
 import Iconify from "../../../../core/Iconify";
 import { useState, useEffect } from "react";
 import QuentityEnter from "../../../../core/QuentityEnter";
-
 import { PlaceOrderServices } from "../../../../services/PlaceOrder";
 import { IState } from "../../../../models/IState";
 import CircularLoader from "../../../../core/CircularLoader";
@@ -19,20 +19,35 @@ import Tosted from "../../../../core/Tosted";
 import { IOrderList } from "../../../../models/IOrderList";
 import WType from "../../../../components/WType";
 import { IUmoType } from "../../../../models/IUmoType";
+import useIsPlaceOrderStore from "../../../../store/isPlaceOrder";
 // ----------------------------------------------------------------------
+
 interface IProps {
   data: IOrderList;
   index: number;
+  isSelected: boolean;
+  handleSelect: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    id: string
+  ) => void;
 }
+
 type SubmitData = {
   name: string;
   quantity: number;
 };
 // ----------------------------------------------------------------------
-const TRow = ({ data, index }: IProps) => {
+const TRow = ({ data, index, isSelected, handleSelect }: IProps) => {
   const [quantity, setQuantity] = useState(data.quantity);
-  const [wType, setWType] = useState<IUmoType>(data.UOM);
+  const [wType, setWType] = useState<IUmoType>(
+    data.UOM === "Kg" ? "Kg" : "PCS"
+  );
   const [product, setProduct] = useState<IOrderList>(data);
+
+  const { active, setActive } = useIsPlaceOrderStore((state) => ({
+    active: state.active,
+    setActive: state.setActive,
+  }));
 
   const [state, setState] = useState<IState>({
     loader: false,
@@ -104,6 +119,44 @@ const TRow = ({ data, index }: IProps) => {
     }
   };
 
+  const deleteItemHandler = async () => {
+    setState({
+      ...state,
+      loader: true,
+    });
+    try {
+      setState({ ...state, loader: true }); // Set loader to true when the operation starts
+      const selected = [data.productId];
+      const response = await PlaceOrderServices.deleteRequirementItem(selected);
+      if (response.status === 200) {
+        setState({
+          loader: false,
+          tosted: true,
+          message: response.data.message,
+          severity: "success",
+        });
+
+        setActive(true);
+      } else {
+        setState({
+          loader: false,
+          tosted: true,
+          message: "Some thing went wrong",
+          severity: "error",
+        });
+      }
+    } catch (error: any) {
+      const errorMessage =
+        error.response?.data?.message || "An unexpected error occurred";
+      setState({
+        loader: false,
+        tosted: true,
+        message: errorMessage,
+        severity: "error",
+      });
+    }
+  };
+
   const handleClose = () => {
     if (tosted) {
       setTimeout(() => {
@@ -133,7 +186,15 @@ const TRow = ({ data, index }: IProps) => {
               : theme.palette.background.paper,
         }}
       >
-        <TableCell align="center">{index + 1}</TableCell>
+        <TableCell align="center">
+          <Checkbox
+            checked={isSelected}
+            onChange={(event) => handleSelect(event, data.productId)}
+            inputProps={{
+              "aria-labelledby": `checkbox-list-label-${data.productId}`,
+            }}
+          />
+        </TableCell>
         <TableCell align="left">
           <Stack direction="row" alignItems="center" spacing={1}>
             <Avatar
@@ -171,7 +232,10 @@ const TRow = ({ data, index }: IProps) => {
                   {!state.loader ? `Update` : <CircularLoader />}
                 </Button>
 
-                <IconButton sx={{ color: "error.main" }}>
+                <IconButton
+                  sx={{ color: "error.main" }}
+                  onClick={deleteItemHandler}
+                >
                   <Iconify icon="eva:trash-2-outline" />
                 </IconButton>
               </Stack>

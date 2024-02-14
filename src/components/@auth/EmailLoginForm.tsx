@@ -129,7 +129,22 @@ export default function EmailLoginForm() {
           setToken(res.data.token);
           setData(res.data.data.user);
 
-          navigate("/");
+          // | "purchaseManager"
+          // | "procurementManager"
+          // | "allocationManager"
+          // | "shopManager";
+
+          console.log("Line No 132", res.data.data.user);
+
+          if (res.data.data.user.role === "shopManager") {
+            navigate("/shopmanager/add");
+          } else if (res.data.data.user.role === "purchaseManager") {
+            navigate("/order");
+          } else if (res.data.data.user.role === "procurementManager") {
+            navigate("/shop-order");
+          } else if (res.data.data.user.role === "allocationManager") {
+            navigate("/confirm-order");
+          }
         })
         .catch((error) => {
           if (error.code == "ERR_NETWORK") {

@@ -25,30 +25,7 @@ const Path = () => {
 
         <Route element={<ProtectedRoute />}>
           {/* ------------- Common Route ----------------- */}
-          <Route
-            path="/"
-            element={
-              <Suspense fallback={<CircularProgress disableShrink />}>
-                <Dashbord />
-              </Suspense>
-            }
-          ></Route>
-          <Route
-            path="/product"
-            element={
-              <Suspense fallback={<CircularProgress disableShrink />}>
-                <Product />
-              </Suspense>
-            }
-          />
-          <Route
-            path="/category"
-            element={
-              <Suspense fallback={<CircularProgress disableShrink />}>
-                <Category />
-              </Suspense>
-            }
-          />
+
           {/* ------------- End Comon  Route ----------------- */}
 
           <Route
@@ -62,7 +39,7 @@ const Path = () => {
 
           <Route element={<MShop />}>
             <Route
-              path="/place-order/view"
+              path="/shopmanager/view"
               element={
                 <Suspense fallback={<CircularProgress disableShrink />}>
                   <View />
@@ -70,7 +47,7 @@ const Path = () => {
               }
             />
             <Route
-              path="/place-order/add"
+              path="/shopmanager/add"
               element={
                 <Suspense fallback={<CircularProgress disableShrink />}>
                   <Add />

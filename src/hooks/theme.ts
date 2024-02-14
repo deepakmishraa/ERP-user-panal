@@ -193,6 +193,23 @@ const theme = createTheme({
         },
       },
     },
+    MuiDrawer: {
+      styleOverrides: {
+        root: {
+          borderRight: "none",
+        },
+        paper: {
+          borderRight: "1px dashed #ccc",
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          borderBottom: "1px dashed #ccc",
+        },
+      },
+    },
     MuiListItem: {
       styleOverrides: {
         root: {
@@ -230,7 +247,8 @@ const theme = createTheme({
         colorSecondary: {
           height: "40px",
           width: "40px",
-          background: lightPalette.secondary.lighter,
+          background: lightPalette.secondary.main,
+          color: lightPalette.background.paper,
           "&:hover": {
             background: lightPalette.secondary.darker,
             color: lightPalette.secondary.lighter,

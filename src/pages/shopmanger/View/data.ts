@@ -9,7 +9,6 @@ interface ITableHeading {
   align: TableCellProps["align"];
 }
 export const THeading: ITableHeading[] = [
-  { id: 0, name: "ID", isMove: false, align: "center" },
   {
     id: 1,
     name: "Name",
@@ -22,6 +21,35 @@ export const THeading: ITableHeading[] = [
     isMove: false,
     align: "center",
   },
+  {
+    id: 4,
+    name: "Quantity",
+    isMove: false,
+    align: "center",
+  },
+  {
+    id: 3,
+    name: "Weight",
+    isMove: false,
+    align: "center",
+  },
+
+  {
+    id: 5,
+    name: "",
+    isMove: true,
+    align: "right",
+  },
+];
+
+export const isMobileHeading: ITableHeading[] = [
+  {
+    id: 1,
+    name: "Name",
+    isMove: false,
+    align: "left",
+  },
+
   {
     id: 4,
     name: "Quantity",

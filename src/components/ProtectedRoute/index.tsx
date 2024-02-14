@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import Body from "../../pages/MainBody";
-import Cookies from "universal-cookie";
 import useTokenStore from "../../store/token";
 import { TokenService } from "../../services/authServices/TokenService";
 import { useNavigate } from "react-router-dom";
 import useUserStore from "../../store/userData";
 import CircularLoader from "../../core/CircularLoader";
+import useIsLoaderStore from "../../store/isLoader";
 
 const ProtectedRoute: React.FC = () => {
   const { token } = useTokenStore((state) => ({
@@ -17,23 +17,29 @@ const ProtectedRoute: React.FC = () => {
     data: state.data,
     setData: state.setData,
   }));
-  const cookies = new Cookies();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
+
+  const { loader, setLoader } = useIsLoaderStore((state) => ({
+    loader: state.loader,
+    setLoader: state.setLoader,
+  }));
 
   const getTokenDetail = async () => {
+    setLoader(true);
     try {
       const response = await TokenService.getTokenDetail();
       if (response.status === 200) {
         console.log("User Detail", response.data.data);
         setData(response.data.data);
-        setIsLoading(false); // Data fetched successfully
+        setLoader(false);
       } else {
         navigate("/login");
+        setLoader(false);
       }
     } catch (error) {
       console.error("Failed to fetch token details", error);
       navigate("/login");
+      setLoader(false);
     }
   };
 
@@ -48,7 +54,7 @@ const ProtectedRoute: React.FC = () => {
     getTokenDetail();
   }, []);
 
-  if (isLoading) {
+  if (loader) {
     return <CircularLoader />; // Show loading state while checking user role
   }
 

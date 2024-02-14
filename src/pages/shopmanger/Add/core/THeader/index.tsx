@@ -1,8 +1,8 @@
 import { IconButton, SelectChangeEvent, Stack, Tooltip } from "@mui/material";
 import { BasicSearch } from "../../../../../core/SearchBar";
 import Iconify from "../../../../../core/Iconify";
-import CType from "../CType";
-import { useState } from "react";
+import CType from "../../../../../core/CType";
+import useMobile from "../../../../../hooks/useMobile";
 // ----------------------------------------------------------------------
 interface IProps {
   searchInputHandler: (value: string) => void;
@@ -18,19 +18,38 @@ const THeader = ({
   categoryHandler,
   category,
 }: IProps) => {
+  const isMobile = useMobile();
   return (
     <Stack
-      direction="row"
+      direction={!isMobile ? "row" : "column"}
       alignItems="center"
-      justifyContent="space-between"
+      justifyContent={"space-between"}
       p={2}
     >
-      <BasicSearch
-        searchInputHandler={searchInputHandler}
-        searchInput={searchInput}
-        width={"250px"}
-      />
-      <Stack direction="row" gap={2}>
+      <Stack
+        direction={"row"}
+        gap={2}
+        width={isMobile ? "100%" : undefined}
+        justifyContent={isMobile ? "space-between" : undefined}
+      >
+        <BasicSearch
+          searchInputHandler={searchInputHandler}
+          searchInput={searchInput}
+          width={"250px"}
+        />
+        <Tooltip title="Filter With Date">
+          <IconButton>
+            <Iconify icon="solar:calendar-date-linear" />
+          </IconButton>
+        </Tooltip>
+      </Stack>
+
+      <Stack
+        direction="row"
+        gap={2}
+        width={isMobile ? "100%" : undefined}
+        justifyContent={isMobile ? "space-between" : undefined}
+      >
         <Tooltip title="Download Excel">
           <IconButton>
             <Iconify icon="tabler:download" />

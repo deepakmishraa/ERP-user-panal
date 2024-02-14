@@ -4,21 +4,28 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Drawer from "@mui/material/Drawer";
 import Toolbar from "@mui/material/Toolbar";
-import { Avatar, IconButton, ListItemIcon, Paper } from "@mui/material";
-import { NavLink } from "react-router-dom";
-import Logo from "../../core/Logo";
-import useStyles from "./styles";
+import { Avatar, ListItemIcon } from "@mui/material";
 import { isAllNav, navigationData } from "./Data";
-import Iconify from "../../core/Iconify";
 import useUserStore from "../../store/userData";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { NavCard } from "./core";
+import useMobile from "../../hooks/useMobile";
+import useIsDrawerStore from "../../store/isDrawer";
 
 const SideNav = () => {
-  const { classes } = useStyles();
   const { data } = useUserStore((state) => ({
     data: state.data,
   }));
+  const isMobile = useMobile();
+
+  const { open, setOpen } = useIsDrawerStore((state) => ({
+    open: state.open,
+    setOpen: state.setOpen,
+  }));
+
+  const handleDrawerToggle = () => {
+    setOpen(!open);
+  };
 
   const navData = useMemo(() => {
     // Combine role-specific and common navigation items
@@ -26,17 +33,29 @@ const SideNav = () => {
       navigationData[data?.role ? data.role : "purchaseManager"] || [];
     return [...roleSpecificNav, ...isAllNav];
   }, [data]);
+  const drawerWidth = 280;
 
   return (
     <Drawer
-      className={classes.drawer}
-      variant="permanent"
-      component={Paper}
+      sx={{
+        width: drawerWidth,
+        position: "relative",
+        flexShrink: 0,
+        "& .MuiDrawer-paper": {
+          width: drawerWidth,
+          boxSizing: "border-box",
+          background: "rgb(249,250,251)",
+        },
+      }}
       anchor="left"
+      variant={isMobile ? "temporary" : "permanent"}
+      open={isMobile ? open : true}
+      onClose={handleDrawerToggle}
+      ModalProps={{
+        keepMounted: true, // Better open performance on mobile.
+      }}
     >
-      <Toolbar>
-        <Logo />
-      </Toolbar>
+      <Toolbar></Toolbar>
       <Box sx={{ position: "relative", height: "100%" }}>
         <Box p={1.3}>
           <List>

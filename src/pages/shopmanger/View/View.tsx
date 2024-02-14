@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { MainHead } from "../../../core/bodyHead";
 import { List, Add } from "./core";
+import H1 from "../../../core/H1";
+import { Stack } from "@mui/material";
 
 function View() {
   const [open, setOpen] = useState(false);
@@ -21,11 +22,14 @@ function View() {
 
   return (
     <>
-      <MainHead
-        title="Place Order"
-        iconTitle="New Order"
-        onClickHandler={onModelHandler}
-      />
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+        mb={5}
+      >
+        <H1 title="All Order List" />
+      </Stack>
       <List />
       <Add
         open={open}

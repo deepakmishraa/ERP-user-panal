@@ -1,11 +1,9 @@
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-
-import { ICategoryList } from "../../../../../models/ICategoryList";
+import { ICategoryList } from "../../models/ICategoryList";
 import { useEffect, useState } from "react";
-import { CategoryService } from "../../../../../services/CategoryServices";
-
+import { CategoryService } from "../../services/CategoryServices";
 interface IProps {
   uRole: string;
   handleChange: (event: SelectChangeEvent) => void;
@@ -37,7 +35,8 @@ export default function CType({ uRole, handleChange }: IProps) {
 
   return (
     <FormControl fullWidth size="small" sx={{ width: "120px" }}>
-      <Select value={uRole} onChange={handleChange}>
+      <Select value={uRole} onChange={handleChange} displayEmpty>
+        <MenuItem value="">All</MenuItem>
         {loader ? (
           <MenuItem>Loading...</MenuItem>
         ) : (

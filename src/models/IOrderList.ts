@@ -1,6 +1,7 @@
 import { IUmoType } from "./IUmoType";
 
 export interface IOrderList {
+  _id: string;
   productId: string;
   productName: string;
   quantity: number;

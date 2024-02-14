@@ -1,5 +1,7 @@
-import { Button } from "@mui/material";
+import { Button, Tooltip } from "@mui/material";
 import Iconify from "../Iconify";
+import useMobile from "../../hooks/useMobile";
+import IconBtn from "@mui/material/IconButton";
 
 interface IProps {
   title: string;
@@ -7,7 +9,14 @@ interface IProps {
 }
 
 const IconButton = ({ title, onClickHandler }: IProps) => {
-  return (
+  const isMobile = useMobile();
+  return isMobile ? (
+    <Tooltip title={title}>
+      <IconBtn color="secondary" onClick={onClickHandler}>
+        <Iconify icon="eva:plus-fill" />
+      </IconBtn>
+    </Tooltip>
+  ) : (
     <Button
       variant="contained"
       startIcon={<Iconify icon="eva:plus-fill" />}

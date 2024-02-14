@@ -17,6 +17,7 @@ const MainHead = ({ title, iconTitle, onClickHandler }: IProps) => {
       mb={5}
     >
       <H1 title={title} />
+
       <IconBtn title={iconTitle} onClickHandler={onClickHandler} />
     </Stack>
   );

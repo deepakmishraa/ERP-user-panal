@@ -5,44 +5,44 @@ import {
   Box,
   Divider,
   IconButton,
-  Paper,
   Toolbar,
-  Popover,
   MenuItem,
   Menu,
   Stack,
   Typography,
 } from "@mui/material";
-import useStyles from "./styles";
-import useModeStore from "../../store/mode";
-import SpaceBetween from "../../core/SpaceBetween";
-import { useState, MouseEvent } from "react";
-import { BasicSearch } from "../../core/SearchBar";
+
+import { useState } from "react";
+
 import Logo from "../../core/Logo";
 import Iconify from "../../core/Iconify";
 import useUserStore from "../../store/userData";
+import useMobile from "../../hooks/useMobile";
+import useIsDrawerStore from "../../store/isDrawer";
 
 const TopNav = () => {
-  const { mode, setMode } = useModeStore((state) => ({
-    mode: state.mode,
-    setMode: state.setMode,
-  }));
-  const { data, setData } = useUserStore((state) => ({
+  const isMobile = useMobile();
+
+  const { data } = useUserStore((state) => ({
     data: state.data,
-    setData: state.setData,
   }));
-  const [searchInput, setSearchInput] = useState<string>("");
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const searchInputHandler = (value: string) => {
-    setSearchInput(value);
-  };
+  const openMenu = Boolean(anchorEl);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const { open, setOpen } = useIsDrawerStore((state) => ({
+    open: state.open,
+    setOpen: state.setOpen,
+  }));
+
+  const handleDrawerToggle = () => {
+    setOpen(!open);
   };
 
   return (
@@ -53,12 +53,25 @@ const TopNav = () => {
         sx={{
           backdropFilter: "blur(6px)",
           backgroundColor: "rgba(249, 250, 251, 0.8)",
+          zIndex: (theme) => theme.zIndex.drawer + 1,
         }}
       >
         <Toolbar>
-          <Stack direction={"row"} justifyContent={"end"} width={"100%"}>
+          <Stack
+            direction={"row"}
+            justifyContent={"space-between"}
+            width={"100%"}
+          >
+            {isMobile ? (
+              <IconButton onClick={handleDrawerToggle}>
+                <Iconify icon="heroicons-outline:menu-alt-1" />
+              </IconButton>
+            ) : (
+              <Logo />
+            )}
+
             <Box display={"flex"} gap={"12px"}>
-              {data?.shop && (
+              {!isMobile && data?.shop && (
                 <Stack
                   sx={{
                     background: (theme) => theme.palette.primary.light,
@@ -83,9 +96,6 @@ const TopNav = () => {
                 </Stack>
               )}
 
-              <IconButton size="small">
-                <img src={"/assets/icons/ic_flag_en.svg"} alt="profile" />
-              </IconButton>
               <IconButton size="small">
                 <Badge
                   badgeContent={4}
@@ -121,7 +131,7 @@ const TopNav = () => {
       <Menu
         anchorEl={anchorEl}
         id="account-menu"
-        open={open}
+        open={openMenu}
         onClose={handleClose}
         onClick={handleClose}
         PaperProps={{
@@ -158,10 +168,6 @@ const TopNav = () => {
           Profile
         </MenuItem>
 
-        <MenuItem onClick={() => alert("sdsd")}>
-          <Iconify icon="eva:settings-outline" sx={{ mr: 2 }} />
-          My Account
-        </MenuItem>
         <Divider />
         <MenuItem onClick={() => alert("sdsd")}>
           <Iconify icon="eva:log-out-outline" sx={{ mr: 2 }} />

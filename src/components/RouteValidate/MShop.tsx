@@ -1,57 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import React from "react";
+import { Navigate, Outlet } from "react-router-dom";
 import useUserStore from "../../store/userData";
-import { TokenService } from "../../services/authServices/TokenService";
-import useTokenStore from "../../store/token";
 import CircularLoader from "../../core/CircularLoader";
-import { Box } from "@mui/material";
-import CenterBox from "../../core/CenterBox";
+import useIsLoaderStore from "../../store/isLoader";
 
 const MShop: React.FC = () => {
-  const navigate = useNavigate();
-  const { data, setData } = useUserStore((state) => ({
+  const { data } = useUserStore((state) => ({
     data: state.data,
-    setData: state.setData,
-  }));
-  const { token } = useTokenStore((state) => ({
-    token: state.token,
   }));
 
-  // Introducing a state to manage loading or uninitialized state
-  const [isLoading, setIsLoading] = useState(true);
+  const { loader } = useIsLoaderStore((state) => ({
+    loader: state.loader,
+  }));
 
-  const getTokenDetail = async () => {
-    try {
-      const response = await TokenService.getTokenDetail();
-      if (response.status === 200) {
-        console.log("User Detail", response.data.data);
-        setData(response.data.data);
-        setIsLoading(false); // Data fetched successfully
-      } else {
-        navigate("/login");
-      }
-    } catch (error) {
-      console.error("Failed to fetch token details", error);
-      navigate("/login");
-    }
-  };
-
-  // Additional useEffect to react to token changes
-  useEffect(() => {
-    if (token) {
-      getTokenDetail();
-    }
-  }, [token]);
-
-  useEffect(() => {
-    getTokenDetail();
-  }, []);
-
-  if (isLoading) {
+  if (loader) {
     return <CircularLoader />; // Show loading state while checking user role
   }
 
-  return data && data.role === "shopManager" ? (
+  return !loader && data && data.role === "shopManager" ? (
     <Outlet />
   ) : (
     <Navigate to={"/login"} />

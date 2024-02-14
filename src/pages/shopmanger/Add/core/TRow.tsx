@@ -7,6 +7,7 @@ import {
   IconButton,
   SelectChangeEvent,
   Button,
+  Checkbox,
 } from "@mui/material";
 import Iconify from "../../../../core/Iconify";
 import { useState, useEffect } from "react";
@@ -18,20 +19,27 @@ import CircularLoader from "../../../../core/CircularLoader";
 import Tosted from "../../../../core/Tosted";
 import WType from "../../../../components/WType";
 import { IUmoType } from "../../../../models/IUmoType";
+import useMobile from "../../../../hooks/useMobile";
 // ----------------------------------------------------------------------
 interface IProps {
   data: INProduct;
   index: number;
+  isSelected: boolean;
+  handleSelect: (
+    event: React.ChangeEvent<HTMLInputElement>,
+    id: string
+  ) => void;
 }
 type SubmitData = {
   name: string;
   quantity: number;
 };
 // ----------------------------------------------------------------------
-const TRow = ({ data, index }: IProps) => {
+const TRow = ({ data, index, isSelected, handleSelect }: IProps) => {
   const [quantity, setQuantity] = useState(data.requirementQuantity);
   const [wType, setWType] = useState<IUmoType>(data.UOM);
   const [product, setProduct] = useState<INProduct>(data);
+  const isMobile = useMobile();
 
   const [state, setState] = useState<IState>({
     loader: false,
@@ -132,19 +140,33 @@ const TRow = ({ data, index }: IProps) => {
               : theme.palette.background.paper,
         }}
       >
-        <TableCell align="center">{index + 1}</TableCell>
-        <TableCell align="left">
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Avatar
-              alt={product.name}
-              src={`/assets/images/avatars/avatar_${index + 1}.jpg`}
-            />
-            <Typography variant="subtitle2" noWrap>
-              {product.name}
-            </Typography>
-          </Stack>
+        <TableCell align="center">
+          <Checkbox
+            checked={isSelected}
+            onChange={(event) => handleSelect(event, data._id)}
+            inputProps={{
+              "aria-labelledby": `checkbox-list-label-${data._id}`,
+            }}
+          />
         </TableCell>
-        <TableCell align="center">{product.category.name}</TableCell>
+        <TableCell align="left">
+          {isMobile ? (
+            data.name.substring(0, 30)
+          ) : (
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Avatar
+                alt={product.name}
+                src={`/assets/images/avatars/avatar_${index + 1}.jpg`}
+              />
+              <Typography variant="subtitle2" noWrap>
+                {product.name}
+              </Typography>
+            </Stack>
+          )}
+        </TableCell>
+        {!isMobile && (
+          <TableCell align="center">{product.category.name}</TableCell>
+        )}
 
         <TableCell align="center">
           <QuentityEnter

@@ -45,7 +45,6 @@ export default function BasicSearch({
       <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
 
       <IconButton sx={{ p: "10px" }} aria-label="search">
-        {/* <SearchIcon sx={{ color: "#ff9900" }} /> */}
         <Iconify icon="ic:twotone-search" />
       </IconButton>
     </Paper>
