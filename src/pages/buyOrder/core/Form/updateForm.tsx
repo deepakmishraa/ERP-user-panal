@@ -1,4 +1,4 @@
-import { Avatar, Box, Stack, Typography } from "@mui/material";
+import { Avatar, Box, IconButton, Stack, Typography } from "@mui/material";
 import { OutlineInput } from "../../../../core/InputField";
 import { useState } from "react";
 import { IState } from "../../../../models/IState";
@@ -12,6 +12,7 @@ import { IOrderList } from "../../../../models/IOrderList";
 import TUpdateForm from "./TUpdate";
 import { shoplist } from "../../data";
 import ShopTable from "./ShopTable";
+import Iconify from "../../../../core/Iconify";
 
 type SubmitData = {
   name: string;
@@ -169,15 +170,15 @@ const UpdateForm = ({ handleClose, data }: IProps) => {
           </Typography>
         </Stack>
 
-        <Stack direction={"row"} gap={"20px"}>
-          <OutlineInput
-            value={name}
-            type="text"
-            label="Shop No"
-            handleInputChange={nameHandlerChange}
-            error={nameValid.isValid ? nameValid.message : undefined}
-            disabled={state.loader}
-          />
+        <OutlineInput
+          value={name}
+          type="text"
+          label="Shop No"
+          handleInputChange={nameHandlerChange}
+          error={nameValid.isValid ? nameValid.message : undefined}
+          disabled={state.loader}
+        />
+        <Stack direction={"row"} gap={"10px"} alignItems={"center"}>
           <OutlineInput
             value={name}
             type="text"
@@ -191,6 +192,9 @@ const UpdateForm = ({ handleClose, data }: IProps) => {
             handleChange={weightChange}
             error={sTypeValid.isValid ? sTypeValid.message : undefined}
           />
+          <IconButton size="large" sx={{ height: "100%" }}>
+            <Iconify icon="mingcute:add-fill" />
+          </IconButton>
         </Stack>
 
         <ShopTable />

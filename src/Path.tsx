@@ -3,9 +3,7 @@ import { lazy, Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { Login } from "./pages/Auth";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { Order } from "./pages/order";
-import { Product } from "./pages/product";
-import { Category } from "./pages/category";
+
 import View from "./pages/shopmanger/View/View";
 import {
   MShop,
@@ -27,15 +25,6 @@ const Path = () => {
           {/* ------------- Common Route ----------------- */}
 
           {/* ------------- End Comon  Route ----------------- */}
-
-          <Route
-            path="/order"
-            element={
-              <Suspense fallback={<CircularProgress disableShrink />}>
-                <Order />
-              </Suspense>
-            }
-          />
 
           <Route element={<MShop />}>
             <Route

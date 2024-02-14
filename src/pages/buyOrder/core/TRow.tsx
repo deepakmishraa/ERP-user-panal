@@ -8,6 +8,7 @@ import {
   IconButton,
   Popover,
   MenuItem,
+  Button,
 } from "@mui/material";
 import { Label } from "../../../core/Label";
 import Iconify from "../../../core/Iconify";
@@ -16,6 +17,9 @@ import { Link } from "react-router-dom";
 import CircularProgressBar from "./CircularProgressBar";
 import Update from "./Update";
 import { IOrderList } from "../../../models/IOrderList";
+import useMobile from "../../../hooks/useMobile";
+import CircularLoader from "../../../core/CircularLoader";
+import { IState } from "../../../models/IState";
 // ----------------------------------------------------------------------
 interface IProps {
   data: IOrderList;
@@ -23,11 +27,21 @@ interface IProps {
 }
 // ----------------------------------------------------------------------
 const TRow = ({ data, index }: IProps) => {
+  const isMobile = useMobile();
+  const [product, setProduct] = useState<IOrderList>(data);
+  const [quantity, setQuantity] = useState(data.quantity);
   const [open, setOpen] = useState<HTMLButtonElement | null>(null);
   const [active, setActive] = useState(false);
   const handleOpenMenu = (event: MouseEvent<HTMLButtonElement>) => {
     setOpen(event.currentTarget);
   };
+
+  const [state, setState] = useState<IState>({
+    loader: false,
+    tosted: false,
+    severity: undefined,
+    message: "",
+  });
 
   const handleCloseMenu = () => {
     setOpen(null);
@@ -54,58 +68,53 @@ const TRow = ({ data, index }: IProps) => {
           <Checkbox color="primary" />
         </TableCell>
         <TableCell component="th" scope="row" padding="none">
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <Avatar
-              alt={data.productName}
-              src={`/assets/images/avatars/avatar_${index + 1}.jpg`}
-            />
-            <Typography variant="subtitle2" noWrap>
-              {data.productName}
-            </Typography>
-          </Stack>
+          {isMobile ? (
+            data.productName
+          ) : (
+            <Stack direction="row" alignItems="center" spacing={2}>
+              <Avatar
+                alt={data.productName}
+                src={`/assets/images/avatars/avatar_${index + 1}.jpg`}
+              />
+              <Typography variant="subtitle2" noWrap>
+                {data.productName}
+              </Typography>
+            </Stack>
+          )}
         </TableCell>
         <TableCell align="left">
           <b>50 kg / {data.quantity} kg</b>
         </TableCell>
+        {!isMobile && (
+          <TableCell align="center">
+            <CircularProgressBar value={50} />
+          </TableCell>
+        )}
 
-        <TableCell align="center">
-          <CircularProgressBar value={50} />
-        </TableCell>
-        <TableCell align="center">
-          <Label color={(index / 2 == 0 && "success") || "success"}>
-            {"Pending"}
-          </Label>
-        </TableCell>
         <TableCell align="right">
-          <IconButton onClick={handleOpenMenu}>
-            <Iconify icon="eva:more-vertical-fill" />
-          </IconButton>
+          <Stack direction={"row"} gap={"5px"} justifyContent={"end"}>
+            {product.quantity > 0 && (
+              <Stack direction={"row"} gap={"4px"} justifyContent={"end"}>
+                <Button
+                  variant="contained"
+                  sx={{ height: "40px" }}
+                  // disabled={data.quantity == quantity ? true : false}
+                  onClick={onModelHandler}
+                >
+                  {!state.loader ? `Update` : <CircularLoader />}
+                </Button>
+
+                <IconButton
+                  sx={{ color: "error.main" }}
+                  onClick={() => alert("sd")}
+                >
+                  <Iconify icon="eva:trash-2-outline" />
+                </IconButton>
+              </Stack>
+            )}
+          </Stack>
         </TableCell>
       </TableRow>
-      <Popover
-        open={!!open}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: "top", horizontal: "left" }}
-        transformOrigin={{ vertical: "top", horizontal: "right" }}
-        PaperProps={{
-          sx: { width: 140 },
-        }}
-      >
-        <MenuItem onClick={onModelHandler}>
-          <Iconify
-            icon="material-symbols:deployed-code-update-outline"
-            sx={{ mr: 2 }}
-          />
-          Update
-        </MenuItem>
-        <Link to={`/vessel/1`}>
-          <MenuItem sx={{ color: "info.main" }}>
-            <Iconify icon="eva:eye-outline" sx={{ mr: 2 }} />
-            View
-          </MenuItem>
-        </Link>
-      </Popover>
 
       <Update
         open={oModel}

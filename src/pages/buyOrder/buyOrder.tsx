@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { MainHead } from "../../core/bodyHead";
 import { List, Add } from "./core";
+import { Stack } from "@mui/material";
+import H1 from "../../core/H1";
 
 function PlaceOrder() {
   const [open, setOpen] = useState(false);
@@ -21,11 +23,15 @@ function PlaceOrder() {
 
   return (
     <>
-      <MainHead
+      {/* <MainHead
         title="Buy Order"
         iconTitle="New Order"
         onClickHandler={onModelHandler}
-      />
+      /> */}
+
+      <Stack mb={5}>
+        <H1 title="Buy Order" />
+      </Stack>
 
       <List />
       <Add

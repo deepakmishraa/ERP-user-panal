@@ -21,6 +21,7 @@ import { TLoader } from "../../../../core/Loader";
 import THeader from "./THeader";
 import TRow from "./TRow";
 import Iconify from "../../../../core/Iconify";
+import { getTodayDate } from "../../../../hooks/getTodayDate";
 
 const List = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -44,7 +45,7 @@ const List = () => {
     message: "",
   });
 
-  const [date, setDate] = useState<string>("");
+  const [date, setDate] = useState<string>(getTodayDate());
 
   // Event handler for date change
   const onDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {

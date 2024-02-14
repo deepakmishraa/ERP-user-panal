@@ -41,6 +41,28 @@ export const THeading: ITableHeading[] = [
   },
 ];
 
+export const isMobileHeading: ITableHeading[] = [
+  {
+    id: 1,
+    name: "Name",
+    isMove: false,
+    align: "left",
+  },
+  {
+    id: 2,
+    name: "Total Order",
+    isMove: false,
+    align: "left",
+  },
+
+  {
+    id: 5,
+    name: "",
+    isMove: true,
+    align: "right",
+  },
+];
+
 export const users = [...Array(24)].map((_, index) => ({
   id: faker.string.uuid(),
   avatarUrl: `/assets/images/avatars/avatar_${index + 1}.jpg`,

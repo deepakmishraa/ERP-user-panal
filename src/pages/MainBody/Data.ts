@@ -26,6 +26,25 @@ export const shopManager: IMenuItem[] = [
       },
     ],
   },
+  {
+    id: 3,
+    name: "Receive",
+    iconify: "lets-icons:order-light",
+    list: [
+      {
+        id: 1,
+        name: "Order",
+        iconify: "lets-icons:order",
+        path: "/shopmanager/order",
+      },
+      {
+        id: 2,
+        name: "History",
+        iconify: "icon-park-solid:history-query",
+        path: "/shopmanager/history",
+      },
+    ],
+  },
 ];
 
 export const purchaseManager: IMenuItem[] = [

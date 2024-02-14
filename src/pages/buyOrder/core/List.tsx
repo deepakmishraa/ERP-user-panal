@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { TPagination } from "../../../core/Pagination";
-import { Paper, TableBody, TablePagination } from "@mui/material";
+import {
+  Paper,
+  SelectChangeEvent,
+  TableBody,
+  TablePagination,
+} from "@mui/material";
 import THeader from "../../../core/THeader";
 import MTable from "./MTable";
 import THead from "./THead";
@@ -17,6 +22,7 @@ const List = () => {
   const [page, setPage] = useState(1);
 
   const [searchInput, setSearchInput] = useState<string>("");
+  const [category, setCategory] = useState("");
 
   const [state, setState] = useState<IState>({
     loader: false,
@@ -29,16 +35,20 @@ const List = () => {
 
   const getAllProductList = async () => {
     try {
-      const response = await PlaceOrderServices.getAllOrderApi();
+      const response = await PlaceOrderServices.getAllOrderApi(
+        page,
+        rowsPerPage,
+        category,
+        searchInput
+      );
       if (
         response.status === 200 &&
         response.data &&
-        response.data.token &&
-        response.data.token.products
+        response.data.data.products
       ) {
-        setTotalCount(response.data.token.totalItems);
-        setPage(response.data.token.currentPage);
-        setList(response.data.token.products);
+        setTotalCount(response.data.data.totalItems);
+        setPage(response.data.data.currentPage);
+        setList(response.data.data.products);
         setState({ ...state, loader: false });
       } else {
         setState({
@@ -57,28 +67,39 @@ const List = () => {
       });
     }
   };
-
-  useEffect(() => {
-    getAllProductList();
-  }, []);
+  const categoryHandler = (event: SelectChangeEvent) => {
+    setCategory(event.target.value);
+  };
 
   const searchInputHandler = (value: string) => {
     setSearchInput(value);
   };
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage + 1); // Add 1 to newPage to make it 1-based index
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    setPage(1);
   };
 
   useEffect(() => {
     getAllProductList();
-  }, [rowsPerPage, page]);
+  }, [rowsPerPage, page, category]);
+
+  useEffect(() => {
+    // Debounce implementation
+    const handler = setTimeout(() => {
+      getAllProductList();
+    }, 500); // 2-second delay
+
+    return () => clearTimeout(handler); // Clear timeout on component unmount or if searchInput changes again within the delay
+  }, [searchInput]);
 
   const getRowsPerPageOptions = () => {
     if (+totalCount <= 10) {
@@ -111,6 +132,8 @@ const List = () => {
           <THeader
             searchInputHandler={searchInputHandler}
             searchInput={searchInput}
+            category={category}
+            categoryHandler={categoryHandler}
           />
           <MTable>
             <THead />
@@ -122,15 +145,17 @@ const List = () => {
             </TableBody>
           </MTable>
 
-          <TablePagination
-            component="div"
-            count={+totalCount}
-            page={+page - 1}
-            onPageChange={handleChangePage}
-            rowsPerPage={+rowsPerPage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-            rowsPerPageOptions={getRowsPerPageOptions()}
-          />
+          {list && list.length > 0 && (
+            <TablePagination
+              component="div"
+              count={+totalCount}
+              page={+page - 1}
+              onPageChange={handleChangePage}
+              rowsPerPage={+rowsPerPage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              rowsPerPageOptions={getRowsPerPageOptions()}
+            />
+          )}
         </Paper>
       </div>
 
